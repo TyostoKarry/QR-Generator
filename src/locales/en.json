@@ -1,0 +1,22 @@
+{
+  "buttons": {
+    "addLogo": "Add Logo",
+    "copy": "Copy",
+    "download": "Download",
+    "generate": "Generate QR Code",
+    "image": "Image",
+    "pdf": "PDF",
+    "share": "Share",
+    "text": "Text",
+    "url": "URL"
+  },
+  "general": {
+    "appName": "QR Generator",
+    "github": "GitHub",
+    "inputDescription": "Insert URL, Text, Image or PDF or something that sort",
+    "inputPlaceholder": "Enter content here",
+    "inputTypeSelectorInfo": "Select content to convert into a QR code",
+    "introText": "Effortlessly create QR codes for links, text, files, and more. Fast, simple, and reliable",
+    "qrCode": "QR Code"
+  }
+}
