@@ -2,8 +2,10 @@
 
 @theme {
   --color-background: #e0e0e0;
-  --color-primary: #005ebd;
-  --color-secondary: #3b843c;
+  --color-primary-2: #076ed5;
+  --color-primary-1: #127ae2;
+  --color-button-1: #51bd53;
+  --color-button-2: #4db34e;
   --color-text: #0d0d0d;
 
   --font-display: "OpenSans", sans-serif;

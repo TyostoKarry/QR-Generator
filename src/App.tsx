@@ -1,14 +1,21 @@
+import { useContext } from "react";
+import { QRGeneratorArea } from "./components/QRGeneratorArea";
+import { Topbar } from "./components/Topbar";
+import { LanguageContext } from "./contexts/LanguageContext";
+
 function App() {
+  const lang = useContext(LanguageContext);
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <h1 className="border-primary border-2 p-4 text-5xl font-bold">
-          QR Generator
-        </h1>
-        <p className="text-2xl font-medium">
-          Generate QR codes from text, files, or links.
-        </p>
-      </div>
+      <Topbar />
+      <main className="flex flex-col items-center h-[calc(100dvh-4rem)] gap-8 px-4 pt-24">
+        <section className="text-center w-2/3">
+          <p className="text-2xl font-medium wrap text-text text-shadow-sm ">
+            {lang.general.introText}
+          </p>
+        </section>
+        <QRGeneratorArea />
+      </main>
     </>
   );
 }
