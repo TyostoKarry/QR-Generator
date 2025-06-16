@@ -1,0 +1,77 @@
+name: Verify Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  license-check:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Install Node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check licenses
+        run: npm run license-check
+
+      - name: Generate license report
+        run: npm run generate-license-report
+
+      - name: Upload license report
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: license-report.json
+
+  verification:
+    name: Run ESLint
+    needs: license-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Install Node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  build:
+    name: Build Project
+    needs: verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Install Node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build

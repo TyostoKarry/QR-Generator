@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #e0e0e0;
+  --color-primary: #005ebd;
+  --color-secondary: #3b843c;
+  --color-text: #0d0d0d;
+
+  --font-display: "OpenSans", sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-display);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("/Fonts/OpenSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("/Fonts/OpenSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("/Fonts/OpenSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("/Fonts/OpenSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
