@@ -5,9 +5,12 @@ import LinkIcon from "../assets/icons/link.svg";
 import PdfIcon from "../assets/icons/pdf.svg";
 import TextIcon from "../assets/icons/text.svg";
 import { LanguageContext } from "../contexts/LanguageContext";
+import { useQRContext } from "../contexts/qrContext";
 
 export const InputTypeSelector: FC = () => {
   const lang = useContext(LanguageContext);
+  const { setQRInputType } = useQRContext();
+
   return (
     <div className="flex flex-col items-center gap-2">
       <p className="text-text text-shadow-xs">
@@ -17,16 +20,24 @@ export const InputTypeSelector: FC = () => {
         <Button
           label={lang.buttons.url}
           icon={LinkIcon}
-          onClick={() => {}}
+          onClick={() => setQRInputType("url")}
           iconClassName="h-4 w-4"
         />
-        <Button label={lang.buttons.text} icon={TextIcon} onClick={() => {}} />
+        <Button
+          label={lang.buttons.text}
+          icon={TextIcon}
+          onClick={() => setQRInputType("text")}
+        />
         <Button
           label={lang.buttons.image}
           icon={ImageIcon}
-          onClick={() => {}}
+          onClick={() => setQRInputType("image")}
         />
-        <Button label={lang.buttons.pdf} icon={PdfIcon} onClick={() => {}} />
+        <Button
+          label={lang.buttons.pdf}
+          icon={PdfIcon}
+          onClick={() => setQRInputType("pdf")}
+        />
       </div>
     </div>
   );
