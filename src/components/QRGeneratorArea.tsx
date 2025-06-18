@@ -6,12 +6,14 @@ import { QRDisplay } from "./QRDisplay";
 import RefreshIcon from "../assets/icons/refresh.svg";
 import UploadIcon from "../assets/icons/upload.svg";
 import { LanguageContext } from "../contexts/LanguageContext";
+import { useQRContext } from "../contexts/QRContext";
 
 export const QRGeneratorArea: FC = () => {
   const lang = useContext(LanguageContext);
+  const { generateQRCode } = useQRContext();
 
   return (
-    <section className="flex flex-row border-4 border-primary-1 rounded-xl px-8 py-8 gap-8">
+    <section className="flex flex-row border-4 bg-white border-primary-1 rounded-xl px-8 py-8 gap-8">
       <div className="flex flex-col justify-between items-center text-center">
         <InputTypeSelector />
         <InputArea />
@@ -19,7 +21,7 @@ export const QRGeneratorArea: FC = () => {
           <Button
             label={lang.buttons.generate}
             icon={RefreshIcon}
-            onClick={() => {}}
+            onClick={() => generateQRCode()}
             className="px-6 py-3 text-xl rounded-full shadow-xl"
           />
           <Button

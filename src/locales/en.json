@@ -13,6 +13,7 @@
   "general": {
     "appName": "QR Generator",
     "github": "GitHub",
+    "helloWorld": "Hello, World!",
     "inputTypeSelectorInfo": "Select content to convert into a QR code",
     "introText": "Effortlessly create QR codes for links, text, files, and more. Fast, simple, and reliable",
     "qrCode": "QR Code"
@@ -33,6 +34,17 @@
     "url": {
       "inputDescription": "Enter a URL to generate a QR code for it",
       "inputPlaceholder": "Enter URL here"
+    }
+  },
+  "validationError": {
+    "text": {
+      "empty": "Text cannot be empty",
+      "maxLength": "Text exceeds maximum length of 1000 characters"
+    },
+    "unknownInputType": "Unknown input type",
+    "url": {
+      "empty": "URL cannot be empty",
+      "format": "Invalid URL format"
     }
   }
 }

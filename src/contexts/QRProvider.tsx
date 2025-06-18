@@ -1,5 +1,12 @@
-import { useEffect, useState, type FC, type ReactNode } from "react";
-import { QRContext } from "./qrContext";
+import {
+  useContext,
+  useEffect,
+  useState,
+  type FC,
+  type ReactNode,
+} from "react";
+import { LanguageContext } from "./LanguageContext";
+import { QRContext } from "./QRContext";
 import type { QRInputType } from "../types/QRInputType";
 
 interface QRProviderProps {
@@ -7,6 +14,10 @@ interface QRProviderProps {
 }
 
 export const QRProvider: FC<QRProviderProps> = ({ children }) => {
+  const lang = useContext(LanguageContext);
+  // QR Code state
+  const [qrCode, setQRCode] = useState<string>("");
+
   // Current QR input type state
   const [qrInputType, setQRInputType] = useState<QRInputType>("url");
 
@@ -28,41 +39,74 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     }
   }, [qrInputType, urlInputValue, textInputValue]);
 
+  // Reset input errors when input values change
+  useEffect(() => {
+    setUrlError(null);
+    setTextError(null);
+  }, [urlInputValue, textInputValue]);
+
   // Input value validation
-  const validateInput = (): void => {
-    // Validate URL input
-    setUrlInputValue(urlInputValue.trim());
+  const getValidationResult = (): {
+    isValid: boolean;
+    error: string | null;
+  } => {
     if (qrInputType === "url") {
-      if (!urlInputValue) {
-        setUrlError("URL cannot be empty");
-        return;
+      const trimmedUrl = urlInputValue.trim();
+      if (!trimmedUrl) {
+        return { isValid: false, error: lang.validationError.url.empty };
       }
       try {
-        new URL(urlInputValue);
-        setUrlError(null);
+        new URL(trimmedUrl);
+        return { isValid: true, error: null };
       } catch {
-        setUrlError("Invalid URL format");
+        return { isValid: false, error: lang.validationError.url.format };
       }
-      return;
     }
 
+    if (qrInputType === "text") {
+      const trimmedText = textInputValue.trim();
+      if (!trimmedText) {
+        return { isValid: false, error: lang.validationError.text.empty };
+      }
+      if (trimmedText.length > 1000) {
+        return { isValid: false, error: lang.validationError.text.maxLength };
+      }
+      return { isValid: true, error: null };
+    }
+
+    return { isValid: false, error: lang.validationError.unknownInputType };
+  };
+  const validateInput = (): void => {
+    const { error } = getValidationResult();
+    // Validate URL input
+    if (qrInputType === "url") {
+      setUrlError(error);
+      return;
+    }
     // Validate text input
     if (qrInputType === "text") {
-      setTextInputValue(textInputValue.trim());
-      if (!textInputValue) {
-        setTextError("Text cannot be empty");
-        return;
-      }
-      if (textInputValue.length > 2000) {
-        setTextError("Text exceeds maximum length of 2000 characters");
-        return;
-      }
-      setTextError(null);
+      setTextError(error);
+      return;
+    }
+  };
+
+  // Generate QR code when input is valid
+  const generateQRCode = (): void => {
+    const { isValid, error } = getValidationResult();
+    if (qrInputType === "url") {
+      setUrlError(error);
+      if (isValid) setQRCode(urlInputValue);
+      return;
+    }
+    if (qrInputType === "text") {
+      setTextError(error);
+      if (isValid) setQRCode(textInputValue);
       return;
     }
   };
 
   const value = {
+    qrCode,
     qrInputType,
     setQRInputType,
     urlInputValue,
@@ -74,6 +118,7 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     textError,
     setTextError,
     validateInput,
+    generateQRCode,
   };
 
   return <QRContext.Provider value={value}>{children}</QRContext.Provider>;

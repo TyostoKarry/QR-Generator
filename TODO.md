@@ -3,7 +3,7 @@
 ## MVP Features
 
 - [x] **Text Input**: User enters a link or text directly.
-- [ ] **QR Code Generation**: Display QR code using text/links as input.
+- [x] **QR Code Generation**: Display QR code using text/links as input.
 - [x] **URL Detection**: Extract URLs using regex or other filters.
 - [ ] **Drag-and-Drop Area**: Accepts various file types (PDF, image).
 - [ ] **PDF Support**: Use `pdfjs-dist` to extract text and links from dropped PDFs.

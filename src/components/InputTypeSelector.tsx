@@ -5,7 +5,7 @@ import LinkIcon from "../assets/icons/link.svg";
 import PdfIcon from "../assets/icons/pdf.svg";
 import TextIcon from "../assets/icons/text.svg";
 import { LanguageContext } from "../contexts/LanguageContext";
-import { useQRContext } from "../contexts/qrContext";
+import { useQRContext } from "../contexts/QRContext";
 
 export const InputTypeSelector: FC = () => {
   const lang = useContext(LanguageContext);
