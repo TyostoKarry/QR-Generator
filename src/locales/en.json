@@ -13,10 +13,38 @@
   "general": {
     "appName": "QR Generator",
     "github": "GitHub",
-    "inputDescription": "Insert URL, Text, Image or PDF or something that sort",
-    "inputPlaceholder": "Enter content here",
+    "helloWorld": "Hello, World!",
     "inputTypeSelectorInfo": "Select content to convert into a QR code",
     "introText": "Effortlessly create QR codes for links, text, files, and more. Fast, simple, and reliable",
     "qrCode": "QR Code"
+  },
+  "inputArea": {
+    "image": {
+      "inputDescription": "Upload an image to embed in a QR code",
+      "inputPlaceholder": "Drag and drop an image here or click to upload"
+    },
+    "pdf": {
+      "inputDescription": "Upload a PDF to create a QR code for",
+      "inputPlaceholder": "Drag and drop a PDF here or click to upload"
+    },
+    "text": {
+      "inputDescription": "Enter text to encode in a QR code",
+      "inputPlaceholder": "Type your text here"
+    },
+    "url": {
+      "inputDescription": "Enter a URL to generate a QR code for it",
+      "inputPlaceholder": "Enter URL here"
+    }
+  },
+  "validationError": {
+    "text": {
+      "empty": "Text cannot be empty",
+      "maxLength": "Text exceeds maximum length of 1000 characters"
+    },
+    "unknownInputType": "Unknown input type",
+    "url": {
+      "empty": "URL cannot be empty",
+      "format": "Invalid URL format"
+    }
   }
 }

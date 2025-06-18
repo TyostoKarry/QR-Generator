@@ -13,6 +13,7 @@
     "generate-license-report": "license-checker-rseidelsohn --production --json > license-report.json"
   },
   "dependencies": {
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
