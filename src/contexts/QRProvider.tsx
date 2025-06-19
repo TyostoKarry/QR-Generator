@@ -22,10 +22,18 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   const [qrInputType, setQRInputType] = useState<QRInputType>("url");
 
   // Input value states for different QR types
+  const [imageFile, setImageFile] = useState<
+    (File & { preview: string }) | null
+  >(null);
+  const [pdfFile, setPdfFile] = useState<(File & { preview: string }) | null>(
+    null,
+  );
   const [urlInputValue, setUrlInputValue] = useState<string>("");
   const [textInputValue, setTextInputValue] = useState<string>("");
 
   // Validation states for input values
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [pdfError, setPdfError] = useState<string | null>(null);
   const [urlError, setUrlError] = useState<string | null>(null);
   const [textError, setTextError] = useState<string | null>(null);
 
@@ -36,6 +44,12 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     }
     if (qrInputType === "text" && !textInputValue) {
       setTextError(null);
+    }
+    if (qrInputType === "image") {
+      setImageError(null);
+    }
+    if (qrInputType === "pdf") {
+      setPdfError(null);
     }
   }, [qrInputType, urlInputValue, textInputValue]);
 
@@ -109,10 +123,18 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     qrCode,
     qrInputType,
     setQRInputType,
+    imageFile,
+    setImageFile,
+    pdfFile,
+    setPdfFile,
     urlInputValue,
     setUrlInputValue,
     textInputValue,
     setTextInputValue,
+    imageError,
+    setImageError,
+    pdfError,
+    setPdfError,
     urlError,
     setUrlError,
     textError,

@@ -23,6 +23,7 @@ export const QRGeneratorArea: FC = () => {
             icon={RefreshIcon}
             onClick={() => generateQRCode()}
             className="px-6 py-3 text-xl rounded-full shadow-xl"
+            iconClassName="h-6.5 w-6.5"
           />
           <Button
             label={lang.buttons.addLogo}

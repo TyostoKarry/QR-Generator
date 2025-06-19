@@ -10,12 +10,20 @@ interface QRContextType {
   setQRInputType: (type: QRInputType) => void;
 
   // Input values for different QR types
+  imageFile: (File & { preview: string }) | null;
+  setImageFile: (file: (File & { preview: string }) | null) => void;
+  pdfFile: (File & { preview: string }) | null;
+  setPdfFile: (file: (File & { preview: string }) | null) => void;
   urlInputValue: string;
   setUrlInputValue: (value: string) => void;
   textInputValue: string;
   setTextInputValue: (value: string) => void;
 
   // Validation states for input values
+  imageError: string | null;
+  setImageError: (error: string | null) => void;
+  pdfError: string | null;
+  setPdfError: (error: string | null) => void;
   urlError: string | null;
   setUrlError: (error: string | null) => void;
   textError: string | null;

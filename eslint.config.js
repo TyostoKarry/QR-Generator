@@ -18,10 +18,12 @@ export default tseslint.config(
       globals: {
         ...globals.browser,
       },
+      parser: tseslint.parser,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
         },
+        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
       },
     },
     settings: {
@@ -35,6 +37,7 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
       import: eslintImport,
       prettier,
+      "@typescript-eslint": tseslint.plugin,
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -64,6 +67,8 @@ export default tseslint.config(
         },
       ],
       "react/display-name": "off",
+      "react/prop-types": "off",
+      "@typescript-eslint/switch-exhaustiveness-check": "error",
     },
   },
 );
