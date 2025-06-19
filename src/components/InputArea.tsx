@@ -1,4 +1,7 @@
 import { useContext, type FC } from "react";
+import { Dropzone } from "./Dropzone";
+import { ImagePreview } from "./ImagePreview";
+import { PdfPreview } from "./PdfPreview";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
 
@@ -6,10 +9,18 @@ export const InputArea: FC = () => {
   const lang = useContext(LanguageContext);
   const {
     qrInputType,
+    imageFile,
+    setImageFile,
+    pdfFile,
+    setPdfFile,
     urlInputValue,
     setUrlInputValue,
     textInputValue,
     setTextInputValue,
+    imageError,
+    setImageError,
+    pdfError,
+    setPdfError,
     urlError,
     setUrlError,
     textError,
@@ -28,35 +39,97 @@ export const InputArea: FC = () => {
   };
 
   switch (qrInputType) {
-    case "url":
+    case "image":
       return (
-        <div className="flex flex-col items-center w-full">
-          <p
-            className={`text-text text-shadow-xs ${urlError ? "pb-2" : "pb-6"}`}
-          >
-            {lang.inputArea[qrInputType].inputDescription}
+        <div className="flex flex-col items-center w-full py-6">
+          <p className="text-text text-shadow-xs pb-2">
+            {imageFile
+              ? lang.inputArea[qrInputType].imageReady
+              : lang.inputArea[qrInputType].inputDescription}
           </p>
-          {urlError && (
-            <p className="flex items-start w-full text-red-500 text-xs pl-2">
-              {urlError}
-            </p>
+          {imageFile ? (
+            <ImagePreview />
+          ) : (
+            <Dropzone
+              key={qrInputType}
+              accept={{
+                "image/png": [".png"],
+                "image/jpeg": [".jpeg", ".jpg"],
+                "image/gif": [".gif"],
+                "image/webp": [".webp"],
+                "image/svg+xml": [".svg"],
+              }}
+              onDrop={(acceptedFiles) => {
+                if (acceptedFiles.length === 1) {
+                  setImageFile(
+                    Object.assign(acceptedFiles[0], {
+                      preview: URL.createObjectURL(acceptedFiles[0]),
+                    }),
+                  );
+                  setImageError(null);
+                }
+              }}
+              text={lang.inputArea[qrInputType].inputPlaceholder}
+              onDropRejected={(fileRejections) => {
+                const errorCode = fileRejections[0].errors[0].code;
+                if (errorCode === "file-invalid-type") {
+                  setImageError(lang.validationError.image.invalidType);
+                } else if (errorCode === "too-many-files") {
+                  setImageError(lang.validationError.image.tooManyFiles);
+                } else if (errorCode === "file-too-large") {
+                  setImageError(lang.validationError.image.tooLarge);
+                }
+              }}
+              errorText={imageError}
+            />
           )}
-          <input
-            className={`border-2 rounded-lg p-2 w-full ${urlError ? "border-red-500" : "border-gray-400"}`}
-            placeholder={lang.inputArea[qrInputType].inputPlaceholder}
-            value={urlInputValue}
-            onChange={(e) => setUrlInputValue(e.target.value)}
-            onBlur={() => validateInput()}
-            onFocus={() => setUrlError(null)}
-            onKeyDown={(e) => {
-              handleShiftAndEnterKeyDown(e);
-            }}
-          />
+        </div>
+      );
+    case "pdf":
+      return (
+        <div className="flex flex-col items-center w-full py-6">
+          <p className="text-text text-shadow-xs pb-2">
+            {pdfFile
+              ? lang.inputArea[qrInputType].pdfReady
+              : lang.inputArea[qrInputType].inputDescription}
+          </p>
+          {pdfFile ? (
+            <PdfPreview />
+          ) : (
+            <Dropzone
+              key={qrInputType}
+              accept={{
+                "application/pdf": [".pdf"],
+              }}
+              onDrop={(acceptedFiles) => {
+                if (acceptedFiles.length === 1) {
+                  setPdfFile(
+                    Object.assign(acceptedFiles[0], {
+                      preview: URL.createObjectURL(acceptedFiles[0]),
+                    }),
+                  );
+                  setImageError(null);
+                }
+              }}
+              text={lang.inputArea[qrInputType].inputPlaceholder}
+              onDropRejected={(fileRejections) => {
+                const errorCode = fileRejections[0].errors[0].code;
+                if (errorCode === "file-invalid-type") {
+                  setPdfError(lang.validationError.pdf.invalidType);
+                } else if (errorCode === "too-many-files") {
+                  setPdfError(lang.validationError.pdf.tooManyFiles);
+                } else if (errorCode === "file-too-large") {
+                  setPdfError(lang.validationError.pdf.tooLarge);
+                }
+              }}
+              errorText={pdfError}
+            />
+          )}
         </div>
       );
     case "text":
       return (
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full py-6">
           <p
             className={`text-text text-shadow-xs ${textError ? "pb-2" : "pb-6"}`}
           >
@@ -81,11 +154,31 @@ export const InputArea: FC = () => {
           ></textarea>
         </div>
       );
-    default:
+    case "url":
       return (
-        <p className="text-text text-shadow-xs">
-          Selected unimplemented QR input type
-        </p>
+        <div className="flex flex-col items-center w-full py-6">
+          <p
+            className={`text-text text-shadow-xs ${urlError ? "pb-2" : "pb-6"}`}
+          >
+            {lang.inputArea[qrInputType].inputDescription}
+          </p>
+          {urlError && (
+            <p className="flex items-start w-full text-red-500 text-xs pl-2">
+              {urlError}
+            </p>
+          )}
+          <input
+            className={`border-2 rounded-lg p-2 w-full ${urlError ? "border-red-500" : "border-gray-400"}`}
+            placeholder={lang.inputArea[qrInputType].inputPlaceholder}
+            value={urlInputValue}
+            onChange={(e) => setUrlInputValue(e.target.value)}
+            onBlur={() => validateInput()}
+            onFocus={() => setUrlError(null)}
+            onKeyDown={(e) => {
+              handleShiftAndEnterKeyDown(e);
+            }}
+          />
+        </div>
       );
   }
 };

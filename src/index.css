@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #e0e0e0;
-  --color-primary-2: #076ed5;
-  --color-primary-1: #127ae2;
+  --color-background-1: #e3eeff;
+  --color-background-2: #f3e7e9;
+  --color-primary-1: #4364f7;
+  --color-primary-2: #0052d4;
   --color-button-1: #51bd53;
   --color-button-2: #4db34e;
   --color-text: #0d0d0d;
@@ -15,7 +16,11 @@
   body {
     font-family: var(--font-display);
     color: var(--color-text);
-    background-color: var(--color-background);
+    background: linear-gradient(
+      to bottom right,
+      var(--color-background-1),
+      var(--color-background-2)
+    );
   }
 }
 

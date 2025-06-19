@@ -19,13 +19,18 @@
     "qrCode": "QR Code"
   },
   "inputArea": {
+    "dropzone": {
+      "text": "Drag and drop or click to upload"
+    },
     "image": {
+      "imageReady": "Image file ready for QR code generation",
       "inputDescription": "Upload an image to embed in a QR code",
-      "inputPlaceholder": "Drag and drop an image here or click to upload"
+      "inputPlaceholder": "Upload png, jpg, gif, webp or svg image"
     },
     "pdf": {
       "inputDescription": "Upload a PDF to create a QR code for",
-      "inputPlaceholder": "Drag and drop a PDF here or click to upload"
+      "inputPlaceholder": "Upload a PDF file here",
+      "pdfReady": "PDF file ready for QR code generation"
     },
     "text": {
       "inputDescription": "Enter text to encode in a QR code",
@@ -37,6 +42,16 @@
     }
   },
   "validationError": {
+    "image": {
+      "invalidType": "Invalid image type. Supported formats: png, jpg, gif, webp, svg",
+      "tooLarge": "Image file is too large. Maximum size is 10 MB",
+      "tooManyFiles": "Too many files. Please upload only one image"
+    },
+    "pdf": {
+      "invalidType": "Invalid file type. Please upload a valid PDF file",
+      "tooLarge": "PDF file is too large. Maximum size is 10 MB",
+      "tooManyFiles": "Too many files. Please upload only one PDF"
+    },
     "text": {
       "empty": "Text cannot be empty",
       "maxLength": "Text exceeds maximum length of 1000 characters"

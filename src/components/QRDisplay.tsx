@@ -22,21 +22,24 @@ export const QRDisplay: FC = () => {
         fgColor={qrCode ? "#000000" : "#bbbbbb"}
       />
       <Button
-        label={lang.buttons.download}
-        icon={DownloadIcon}
-        onClick={() => {}}
-        className="w-full"
-      />
-      <Button
         label={lang.buttons.copy}
         icon={CopyIcon}
         onClick={() => {}}
+        disabled={!qrCode}
         className="w-full"
       />
       <Button
         label={lang.buttons.share}
         icon={ShareIcon}
         onClick={() => {}}
+        disabled={!qrCode}
+        className="w-full"
+      />
+      <Button
+        label={lang.buttons.download}
+        icon={DownloadIcon}
+        onClick={() => {}}
+        disabled={!qrCode}
         className="w-full"
       />
     </div>
