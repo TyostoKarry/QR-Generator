@@ -1,10 +1,11 @@
-import { type FC } from "react";
+import { type FC, type ReactNode } from "react";
 
 interface ButtonProps {
   label: string;
-  icon?: string;
+  icon?: ReactNode;
   onClick: () => void;
   disabled?: boolean;
+  variant?: "primary" | "danger";
   className?: string;
   iconClassName?: string;
 }
@@ -14,16 +15,23 @@ export const Button: FC<ButtonProps> = ({
   icon,
   onClick,
   disabled = false,
+  variant = "primary",
   className = "",
   iconClassName = "",
 }) => {
+  const variantStyles = {
+    primary: "bg-gradient-to-br from-button-1 to to-button-2",
+    danger: "bg-red-500 hover:bg-red-600 active:bg-red-500",
+  };
+
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       aria-disabled={disabled}
       type="button"
-      className={`flex flex-row justify-center items-center px-4 py-2 bg-gradient-to-br from-button-1 to to-button-2 text-text text-shadow-xs rounded shadow-lg
+      className={`flex flex-row justify-center items-center px-4 py-2 text-text text-shadow-xs rounded shadow-lg
+        ${variantStyles[variant]}
         ${icon ? "gap-2" : ""}
         ${
           disabled
@@ -32,11 +40,11 @@ export const Button: FC<ButtonProps> = ({
         } ${className}`}
     >
       {icon && (
-        <img
-          src={icon}
-          alt="Button Icon"
-          className={iconClassName ? iconClassName : `h-5 w-5`}
-        />
+        <span
+          className={`flex items-center ${iconClassName ? iconClassName : "h-5 w-5"}`}
+        >
+          {icon}
+        </span>
       )}
       {label}
     </button>

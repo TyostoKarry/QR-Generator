@@ -1,9 +1,9 @@
 import { useContext, type FC } from "react";
 import { Button } from "./Button";
-import ImageIcon from "../assets/icons/image.svg";
-import LinkIcon from "../assets/icons/link.svg";
-import PdfIcon from "../assets/icons/pdf.svg";
-import TextIcon from "../assets/icons/text.svg";
+import ImageIcon from "../assets/icons/image.svg?react";
+import LinkIcon from "../assets/icons/link.svg?react";
+import PdfIcon from "../assets/icons/pdf.svg?react";
+import TextIcon from "../assets/icons/text.svg?react";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
 
@@ -19,23 +19,23 @@ export const InputTypeSelector: FC = () => {
       <div className="flex flex-row gap-4">
         <Button
           label={lang.buttons.url}
-          icon={LinkIcon}
+          icon={<LinkIcon />}
           onClick={() => setQRInputType("url")}
           iconClassName="h-4 w-4"
         />
         <Button
           label={lang.buttons.text}
-          icon={TextIcon}
+          icon={<TextIcon />}
           onClick={() => setQRInputType("text")}
         />
         <Button
           label={lang.buttons.image}
-          icon={ImageIcon}
+          icon={<ImageIcon />}
           onClick={() => setQRInputType("image")}
         />
         <Button
           label={lang.buttons.pdf}
-          icon={PdfIcon}
+          icon={<PdfIcon />}
           onClick={() => setQRInputType("pdf")}
         />
       </div>

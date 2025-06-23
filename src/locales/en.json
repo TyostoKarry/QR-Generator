@@ -6,6 +6,7 @@
     "generate": "Generate QR Code",
     "image": "Image",
     "pdf": "PDF",
+    "removeLogo": "Remove Logo",
     "text": "Text",
     "url": "URL"
   },
