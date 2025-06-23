@@ -6,7 +6,6 @@
     "generate": "Generate QR Code",
     "image": "Image",
     "pdf": "PDF",
-    "share": "Share",
     "text": "Text",
     "url": "URL"
   },
@@ -39,6 +38,16 @@
     "url": {
       "inputDescription": "Enter a URL to generate a QR code for it",
       "inputPlaceholder": "Enter URL here"
+    }
+  },
+  "toast": {
+    "error": {
+      "copyError": "Failed to copy to clipboard",
+      "downloadError": "Failed to download QR code"
+    },
+    "success": {
+      "copySuccess": "Copied to clipboard",
+      "downloadSuccess": "QR code downloaded successfully"
     }
   },
   "validationError": {

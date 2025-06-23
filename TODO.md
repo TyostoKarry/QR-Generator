@@ -8,7 +8,7 @@
 - [x] **Drag-and-Drop Area**: Accepts various file types (PDF, image).
 - [ ] **Logo Overlay in QR**: Embed a small image/logo in the center of the QR code.
 - [ ] **Error Correction Handling**: Adjust error correction levels based on whether a logo is used.
-- [ ] **Share Functionality**: Copy QR codes to clipboard or download QR images.
+- [x] **Share Functionality**: Copy QR codes to clipboard or download QR images.
 - [ ] **Firebase Storage**: Configure Firebase Storage to securely store uploaded files (images and PDFs). Generate public URLs for these files to embed in QR codes. Set up storage rules to enforce file size limits (max 10MB) and restrict uploads to authenticated users.
 - [ ] **Firebase Authentication**: Enable user login (e.g., email/password, Google) to restrict file-related QR code generation to logged-in users.
 - [ ] **Rate Limit**: Track and enforce rate limiting (max 3 file-related QR codes per hour per user).
