@@ -44,7 +44,10 @@
   "toast": {
     "error": {
       "copyError": "Failed to copy to clipboard",
-      "downloadError": "Failed to download QR code"
+      "downloadError": "Failed to download QR code",
+      "logoFileTooLarge": "Logo image is too large. Maximum size is 10 MB",
+      "logoInvalidFileType": "Invalid logo image type. Supported formats: png, jpg, jpeg",
+      "logoNoFileSelected": "No logo image selected"
     },
     "success": {
       "copySuccess": "Copied to clipboard",

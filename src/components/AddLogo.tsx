@@ -1,4 +1,5 @@
 import { useContext, type FC } from "react";
+import { toast } from "sonner";
 import { Button } from "./Button";
 import RemoveIcon from "../assets/icons/remove.svg?react";
 import UploadIcon from "../assets/icons/upload.svg?react";
@@ -8,6 +9,20 @@ import { useQRContext } from "../contexts/QRContext";
 export const AddLogo: FC = () => {
   const lang = useContext(LanguageContext);
   const { qrCodeLogoSrc, setQrCodeLogoSrc } = useQRContext();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+
+    if (!file) return toast.error(lang.toast.error.logoNoFileSelected);
+    if (file.size > 10 * 1024 * 1024)
+      return toast.error(lang.toast.error.logoFileTooLarge);
+    if (!["image/png", "image/jpeg", "image/jpg"].includes(file.type))
+      return toast.error(lang.toast.error.logoInvalidFileType);
+
+    const previewUrl = URL.createObjectURL(file);
+    setQrCodeLogoSrc(previewUrl);
+  };
 
   return (
     <>
@@ -36,14 +51,7 @@ export const AddLogo: FC = () => {
         type="file"
         accept="image/png, image/jpeg, image/jpg"
         className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) {
-            const previewUrl = URL.createObjectURL(file);
-            setQrCodeLogoSrc(previewUrl);
-          }
-          e.target.value = "";
-        }}
+        onChange={(e) => handleFileChange(e)}
       />
     </>
   );
