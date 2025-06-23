@@ -5,8 +5,10 @@ import {
   type FC,
   type ReactNode,
 } from "react";
+import { toast } from "sonner";
 import { LanguageContext } from "./LanguageContext";
 import { QRContext } from "./QRContext";
+import type { FileWithPreview } from "../types/FileWithPreview";
 import type { QRInputType } from "../types/QRInputType";
 
 interface QRProviderProps {
@@ -22,12 +24,8 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   const [qrInputType, setQRInputType] = useState<QRInputType>("url");
 
   // Input value states for different QR types
-  const [imageFile, setImageFile] = useState<
-    (File & { preview: string }) | null
-  >(null);
-  const [pdfFile, setPdfFile] = useState<(File & { preview: string }) | null>(
-    null,
-  );
+  const [imageFile, setImageFile] = useState<FileWithPreview | null>(null);
+  const [pdfFile, setPdfFile] = useState<FileWithPreview | null>(null);
   const [urlInputValue, setUrlInputValue] = useState<string>("");
   const [textInputValue, setTextInputValue] = useState<string>("");
 
@@ -119,6 +117,47 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     }
   };
 
+  // QR code operations
+  const copyQrCodeToClipboard = () => {
+    const canvas = document.getElementById("qrcode-canvas");
+    if (!(canvas instanceof HTMLCanvasElement))
+      return toast.error(lang.toast.error.copyError);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return toast.error(lang.toast.error.copyError);
+
+      const clipboardItem = new ClipboardItem({ "image/png": blob });
+      navigator.clipboard
+        .write([clipboardItem])
+        .then(() => {
+          toast.success(lang.toast.success.copySuccess);
+        })
+        .catch(() => {
+          toast.error(lang.toast.error.copyError);
+        });
+    });
+  };
+
+  const downloadQrCode = () => {
+    const canvas = document.getElementById("qrcode-canvas");
+    if (!(canvas instanceof HTMLCanvasElement))
+      return toast.error(lang.toast.error.downloadError);
+
+    try {
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "qrcode.png";
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(lang.toast.success.downloadSuccess);
+    } catch {
+      return toast.error(lang.toast.error.downloadError);
+    }
+  };
+
   const value = {
     qrCode,
     qrInputType,
@@ -141,6 +180,8 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     setTextError,
     validateInput,
     generateQRCode,
+    copyQrCodeToClipboard,
+    downloadQrCode,
   };
 
   return <QRContext.Provider value={value}>{children}</QRContext.Provider>;

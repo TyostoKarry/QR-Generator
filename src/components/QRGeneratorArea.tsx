@@ -4,7 +4,6 @@ import { InputArea } from "./InputArea";
 import { InputTypeSelector } from "./InputTypeSelector";
 import { QRDisplay } from "./QRDisplay";
 import RefreshIcon from "../assets/icons/refresh.svg";
-import UploadIcon from "../assets/icons/upload.svg";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
 
@@ -17,18 +16,13 @@ export const QRGeneratorArea: FC = () => {
       <div className="flex flex-col justify-between items-center text-center">
         <InputTypeSelector />
         <InputArea />
-        <div className="flex flex-row justify-between items-center w-full">
+        <div className="flex justify-start w-full">
           <Button
             label={lang.buttons.generate}
             icon={RefreshIcon}
             onClick={() => generateQRCode()}
             className="px-6 py-3 text-xl rounded-full shadow-xl"
             iconClassName="h-6.5 w-6.5"
-          />
-          <Button
-            label={lang.buttons.addLogo}
-            icon={UploadIcon}
-            onClick={() => {}}
           />
         </div>
       </div>

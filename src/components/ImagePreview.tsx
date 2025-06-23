@@ -23,7 +23,10 @@ export const ImagePreview: FC = () => {
             alt="Remove Icon"
             aria-label="Remove image"
             className="absolute top-1 right-1 h-6 w-6 bg-red-400 rounded-full p-1 cursor-pointer hover:bg-red-500"
-            onClick={() => setImageFile(null)}
+            onClick={() => {
+              URL.revokeObjectURL(imageFile.preview);
+              setImageFile(null);
+            }}
           />
         </div>
       </div>

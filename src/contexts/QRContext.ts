@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import type { FileWithPreview } from "../types/FileWithPreview";
 import type { QRInputType } from "../types/QRInputType";
 
 interface QRContextType {
@@ -10,10 +11,10 @@ interface QRContextType {
   setQRInputType: (type: QRInputType) => void;
 
   // Input values for different QR types
-  imageFile: (File & { preview: string }) | null;
-  setImageFile: (file: (File & { preview: string }) | null) => void;
-  pdfFile: (File & { preview: string }) | null;
-  setPdfFile: (file: (File & { preview: string }) | null) => void;
+  imageFile: FileWithPreview | null;
+  setImageFile: (file: FileWithPreview | null) => void;
+  pdfFile: FileWithPreview | null;
+  setPdfFile: (file: FileWithPreview | null) => void;
   urlInputValue: string;
   setUrlInputValue: (value: string) => void;
   textInputValue: string;
@@ -34,6 +35,10 @@ interface QRContextType {
 
   // Function to generate the QR code based on the current input type
   generateQRCode: () => void;
+
+  // Function to operate on the QR code, such as copying or downloading
+  copyQrCodeToClipboard: () => void;
+  downloadQrCode: () => void;
 }
 
 export const QRContext = createContext<QRContextType | undefined>(undefined);

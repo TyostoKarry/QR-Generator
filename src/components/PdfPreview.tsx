@@ -25,7 +25,10 @@ export const PdfPreview: FC = () => {
             alt="Remove Icon"
             aria-label="Remove PDF"
             className="absolute top-1 right-1 h-6 w-6 bg-red-400 rounded-full p-1 cursor-pointer hover:bg-red-500"
-            onClick={() => setPdfFile(null)}
+            onClick={() => {
+              URL.revokeObjectURL(pdfFile.preview);
+              setPdfFile(null);
+            }}
           />
         </div>
       </div>
