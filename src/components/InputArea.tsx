@@ -75,7 +75,7 @@ export const InputArea: FC = () => {
               onDropRejected={(fileRejections) => {
                 const errorCode = fileRejections[0].errors[0].code;
                 if (errorCode === "file-invalid-type") {
-                  setImageError(lang.validationError.image.invalidType);
+                  setImageError(lang.validationError.image.invalidFileType);
                 } else if (errorCode === "too-many-files") {
                   setImageError(lang.validationError.image.tooManyFiles);
                 } else if (errorCode === "file-too-large") {
@@ -121,7 +121,7 @@ export const InputArea: FC = () => {
               onDropRejected={(fileRejections) => {
                 const errorCode = fileRejections[0].errors[0].code;
                 if (errorCode === "file-invalid-type") {
-                  setPdfError(lang.validationError.pdf.invalidType);
+                  setPdfError(lang.validationError.pdf.invalidFileType);
                 } else if (errorCode === "too-many-files") {
                   setPdfError(lang.validationError.pdf.tooManyFiles);
                 } else if (errorCode === "file-too-large") {
