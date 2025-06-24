@@ -20,10 +20,6 @@ interface QRContextType {
   textInputValue: string;
   setTextInputValue: (value: string) => void;
 
-  // QR code styling values
-  qrCodeLogoSrc: string | null;
-  setQrCodeLogoSrc: (src: string | null) => void;
-
   // Validation states for input values
   imageError: string | null;
   setImageError: (error: string | null) => void;

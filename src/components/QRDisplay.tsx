@@ -1,16 +1,25 @@
 import { QRCodeCanvas } from "qrcode.react";
-import { useContext, type FC } from "react";
+import { useContext, useState, type FC } from "react";
 import { AddLogo } from "./AddLogo";
 import { Button } from "./Button";
+import { QRColorPickerModal } from "./QRColorPickerModal";
 import CopyIcon from "../assets/icons/copy.svg?react";
 import DownloadIcon from "../assets/icons/download.svg?react";
+import PaletteIcon from "../assets/icons/palette.svg?react";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
 
 export const QRDisplay: FC = () => {
   const lang = useContext(LanguageContext);
-  const { qrCode, qrCodeLogoSrc, copyQrCodeToClipboard, downloadQrCode } =
-    useQRContext();
+  const { qrCode, copyQrCodeToClipboard, downloadQrCode } = useQRContext();
+
+  const [qrCodeLogoSrc, setQrCodeLogoSrc] = useState<string | null>("");
+  const [qrForegroundColor, setQrForegroundColor] = useState<string>("#000000");
+  const [qrBackgroundColor, setQrBackgroundColor] = useState<string>("#ffffff");
+
+  const [isColorPickerModalOpen, setIsColorPickerModalOpen] =
+    useState<boolean>(false);
+
   return (
     <div className="flex flex-col justify-between items-center px-2 gap-2">
       <h3 className="text-text text-3xl text-shadow-lg">
@@ -21,7 +30,8 @@ export const QRDisplay: FC = () => {
         value={qrCode ? qrCode : lang.general.helloWorld}
         size={256}
         level={qrCodeLogoSrc ? "H" : "M"}
-        fgColor={qrCode ? "#000000" : "#bbbbbb"}
+        fgColor={qrCode ? qrForegroundColor : "#bbbbbb"}
+        bgColor={qrCode ? qrBackgroundColor : "#ffffff"}
         imageSettings={
           qrCodeLogoSrc
             ? {
@@ -33,7 +43,18 @@ export const QRDisplay: FC = () => {
             : undefined
         }
       />
-      <AddLogo />
+      <div className="w-full flex flex-row gap-2">
+        <AddLogo
+          qrCodeLogoSrc={qrCodeLogoSrc}
+          setQrCodeLogoSrc={setQrCodeLogoSrc}
+        />
+        <Button
+          icon={<PaletteIcon />}
+          onClick={() => setIsColorPickerModalOpen(true)}
+          iconClassName="h-6 w-6"
+          disabled={!qrCode}
+        />
+      </div>
       <Button
         label={lang.buttons.copy}
         icon={<CopyIcon />}
@@ -48,6 +69,15 @@ export const QRDisplay: FC = () => {
         disabled={!qrCode}
         className="w-full"
         iconClassName="h-5 w-5"
+      />
+      <QRColorPickerModal
+        isModalOpen={isColorPickerModalOpen}
+        setIsModalOpen={setIsColorPickerModalOpen}
+        qrCodeLogoSrc={qrCodeLogoSrc}
+        qrForegroundColor={qrForegroundColor}
+        setQrForegroundColor={setQrForegroundColor}
+        qrBackgroundColor={qrBackgroundColor}
+        setQrBackgroundColor={setQrBackgroundColor}
       />
     </div>
   );

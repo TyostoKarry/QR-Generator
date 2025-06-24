@@ -29,9 +29,6 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   const [urlInputValue, setUrlInputValue] = useState<string>("");
   const [textInputValue, setTextInputValue] = useState<string>("");
 
-  // Style states for QR code
-  const [qrCodeLogoSrc, setQrCodeLogoSrc] = useState<string | null>("");
-
   // Validation states for input values
   const [imageError, setImageError] = useState<string | null>(null);
   const [pdfError, setPdfError] = useState<string | null>(null);
@@ -173,8 +170,6 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     setUrlInputValue,
     textInputValue,
     setTextInputValue,
-    qrCodeLogoSrc,
-    setQrCodeLogoSrc,
     imageError,
     setImageError,
     pdfError,

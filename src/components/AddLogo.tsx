@@ -4,11 +4,17 @@ import { Button } from "./Button";
 import RemoveIcon from "../assets/icons/remove.svg?react";
 import UploadIcon from "../assets/icons/upload.svg?react";
 import { LanguageContext } from "../contexts/LanguageContext";
-import { useQRContext } from "../contexts/QRContext";
 
-export const AddLogo: FC = () => {
+interface AddLogoProps {
+  qrCodeLogoSrc: string | null;
+  setQrCodeLogoSrc: (src: string | null) => void;
+}
+
+export const AddLogo: FC<AddLogoProps> = ({
+  qrCodeLogoSrc,
+  setQrCodeLogoSrc,
+}) => {
   const lang = useContext(LanguageContext);
-  const { qrCodeLogoSrc, setQrCodeLogoSrc } = useQRContext();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

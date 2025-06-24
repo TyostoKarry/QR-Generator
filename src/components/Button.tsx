@@ -1,11 +1,11 @@
 import { type FC, type ReactNode } from "react";
 
 interface ButtonProps {
-  label: string;
+  label?: string;
   icon?: ReactNode;
   onClick: () => void;
   disabled?: boolean;
-  variant?: "primary" | "danger";
+  variant?: "primary" | "secondary" | "danger";
   className?: string;
   iconClassName?: string;
 }
@@ -21,6 +21,7 @@ export const Button: FC<ButtonProps> = ({
 }) => {
   const variantStyles = {
     primary: "bg-gradient-to-br from-button-1 to to-button-2",
+    secondary: "bg-stone-400",
     danger: "bg-red-500 hover:bg-red-600 active:bg-red-500",
   };
 
