@@ -63,11 +63,13 @@
   },
   "validationError": {
     "image": {
+      "invalidFileName": "Invalid image file name. Only alphanumeric characters, underscores, and hyphens are allowed",
       "invalidType": "Invalid image type. Supported formats: png, jpg, gif, webp, svg",
       "tooLarge": "Image file is too large. Maximum size is 10 MB",
       "tooManyFiles": "Too many files. Please upload only one image"
     },
     "pdf": {
+      "invalidFileName": "Invalid PDF file name. Only alphanumeric characters, underscores, and hyphens are allowed",
       "invalidType": "Invalid file type. Please upload a valid PDF file",
       "tooLarge": "PDF file is too large. Maximum size is 10 MB",
       "tooManyFiles": "Too many files. Please upload only one PDF"

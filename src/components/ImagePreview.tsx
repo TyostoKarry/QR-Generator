@@ -4,6 +4,7 @@ import { useQRContext } from "../contexts/QRContext";
 
 export const ImagePreview: FC = () => {
   const { imageFile, setImageFile } = useQRContext();
+
   if (!imageFile) {
     return null; // Return null if no image file is selected
   }

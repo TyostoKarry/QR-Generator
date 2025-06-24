@@ -4,6 +4,7 @@ import { ImagePreview } from "./ImagePreview";
 import { PdfPreview } from "./PdfPreview";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
+import { validateFileName } from "../utils/validateFileName";
 
 export const InputArea: FC = () => {
   const lang = useContext(LanguageContext);
@@ -56,18 +57,19 @@ export const InputArea: FC = () => {
                 "image/png": [".png"],
                 "image/jpeg": [".jpeg", ".jpg"],
                 "image/gif": [".gif"],
-                "image/webp": [".webp"],
-                "image/svg+xml": [".svg"],
               }}
               onDrop={(acceptedFiles) => {
-                if (acceptedFiles.length === 1) {
-                  setImageFile(
-                    Object.assign(acceptedFiles[0], {
-                      preview: URL.createObjectURL(acceptedFiles[0]),
-                    }),
+                if (acceptedFiles.length != 1) return;
+                if (!validateFileName(acceptedFiles[0].name))
+                  return setImageError(
+                    lang.validationError.image.invalidFileName,
                   );
-                  setImageError(null);
-                }
+                setImageFile(
+                  Object.assign(acceptedFiles[0], {
+                    preview: URL.createObjectURL(acceptedFiles[0]),
+                  }),
+                );
+                setImageError(null);
               }}
               text={lang.inputArea[qrInputType].inputPlaceholder}
               onDropRejected={(fileRejections) => {
@@ -81,6 +83,7 @@ export const InputArea: FC = () => {
                 }
               }}
               errorText={imageError}
+              setErrorText={setImageError}
             />
           )}
         </div>
@@ -102,14 +105,17 @@ export const InputArea: FC = () => {
                 "application/pdf": [".pdf"],
               }}
               onDrop={(acceptedFiles) => {
-                if (acceptedFiles.length === 1) {
-                  setPdfFile(
-                    Object.assign(acceptedFiles[0], {
-                      preview: URL.createObjectURL(acceptedFiles[0]),
-                    }),
+                if (acceptedFiles.length != 1) return;
+                if (!validateFileName(acceptedFiles[0].name))
+                  return setPdfError(
+                    lang.validationError.image.invalidFileName,
                   );
-                  setImageError(null);
-                }
+                setPdfFile(
+                  Object.assign(acceptedFiles[0], {
+                    preview: URL.createObjectURL(acceptedFiles[0]),
+                  }),
+                );
+                setImageError(null);
               }}
               text={lang.inputArea[qrInputType].inputPlaceholder}
               onDropRejected={(fileRejections) => {
@@ -123,6 +129,7 @@ export const InputArea: FC = () => {
                 }
               }}
               errorText={pdfError}
+              setErrorText={setPdfError}
             />
           )}
         </div>
