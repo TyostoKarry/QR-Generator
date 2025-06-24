@@ -21,7 +21,7 @@ export const AddLogo: FC<AddLogoProps> = ({
     e.target.value = "";
 
     if (!file) return toast.error(lang.toast.error.logoNoFileSelected);
-    if (file.size > 10 * 1024 * 1024)
+    if (file.size > 100 * 1024 * 1024)
       return toast.error(lang.toast.error.logoFileTooLarge);
     if (!["image/png", "image/jpeg", "image/jpg"].includes(file.type))
       return toast.error(lang.toast.error.logoInvalidFileType);
