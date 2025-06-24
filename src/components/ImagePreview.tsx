@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import RemoveIcon from "../assets/icons/remove.svg";
+import RemoveIcon from "../assets/icons/remove.svg?react";
 import { useQRContext } from "../contexts/QRContext";
 
 export const ImagePreview: FC = () => {
@@ -18,9 +18,8 @@ export const ImagePreview: FC = () => {
             className="h-32 cursor-pointer"
             onClick={() => window.open(imageFile.preview, "_blank")}
           />
-          <img
-            src={RemoveIcon}
-            alt="Remove Icon"
+          <RemoveIcon
+            stroke="#ffffff"
             aria-label="Remove image"
             className="absolute top-1 right-1 h-6 w-6 bg-red-400 rounded-full p-1 cursor-pointer hover:bg-red-500"
             onClick={() => {

@@ -26,7 +26,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
       accept,
       onDrop,
       multiple: false,
-      maxSize: 10485760, // 10 MB
+      maxSize: 10 * 1024 * 1024, // 10 MB
       onDropRejected,
     });
 
