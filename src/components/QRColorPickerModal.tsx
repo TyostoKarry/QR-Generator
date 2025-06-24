@@ -88,7 +88,7 @@ export const QRColorPickerModal: FC<QRColorPickerModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <div className="flex flex-col items-center justify-center bg-gradient-to-tl from-background-2 to-background-1 p-4 rounded-lg shadow-lg">
+      <div className="flex flex-col items-center justify-center bg-gradient-to-tl from-background-2 to-background-1 border border-gray-500 p-4 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold pb-2">
           {lang.colorPickerModal.title}
         </h2>
