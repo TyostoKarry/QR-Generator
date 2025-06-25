@@ -69,12 +69,14 @@
     "image": {
       "invalidFileName": "Invalid image file name. Only alphanumeric characters, underscores, and hyphens are allowed",
       "invalidFileType": "Invalid image type. Supported formats: png, jpg, gif",
+      "noFileSelected": "No image file selected",
       "tooLarge": "Image file is too large. Maximum size is 10 MB",
       "tooManyFiles": "Too many files. Please upload only one image"
     },
     "pdf": {
       "invalidFileName": "Invalid PDF file name. Only alphanumeric characters, underscores, and hyphens are allowed",
       "invalidFileType": "Invalid file type. Please upload a valid PDF file",
+      "noFileSelected": "No PDF file selected",
       "tooLarge": "PDF file is too large. Maximum size is 10 MB",
       "tooManyFiles": "Too many files. Please upload only one PDF"
     },

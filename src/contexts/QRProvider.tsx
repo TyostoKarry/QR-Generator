@@ -6,8 +6,10 @@ import {
   type ReactNode,
 } from "react";
 import { toast } from "sonner";
+import { useAuthContext } from "./AuthContext";
 import { LanguageContext } from "./LanguageContext";
 import { QRContext } from "./QRContext";
+import { uploadFileToSupabase } from "../services/storageService";
 import type { FileWithPreview } from "../types/FileWithPreview";
 import type { QRInputType } from "../types/QRInputType";
 
@@ -17,6 +19,7 @@ interface QRProviderProps {
 
 export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   const lang = useContext(LanguageContext);
+  const { session } = useAuthContext();
   // QR Code state
   const [qrCode, setQRCode] = useState<string>("");
 
@@ -103,7 +106,7 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   };
 
   // Generate QR code when input is valid
-  const generateQRCode = (): void => {
+  const generateQRCode = async (): Promise<void> => {
     const { isValid, error } = getValidationResult();
     if (qrInputType === "url") {
       setUrlError(error);
@@ -113,6 +116,54 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     if (qrInputType === "text") {
       setTextError(error);
       if (isValid) setQRCode(textInputValue);
+      return;
+    }
+    if (qrInputType === "image") {
+      if (!imageFile) {
+        setImageError(lang.validationError.image.noFileSelected);
+        return;
+      }
+      if (imageFile.size > 10 * 1024 * 1024) {
+        setImageError(lang.validationError.image.tooLarge);
+        return;
+      }
+      if (!["image/png", "image/jpeg", "image/jpg"].includes(imageFile.type)) {
+        setImageError(lang.validationError.image.invalidFileType);
+        return;
+      }
+      try {
+        const publicUrl = await uploadFileToSupabase(imageFile, session);
+        if (publicUrl) {
+          setQRCode(publicUrl);
+          setImageError(null);
+        }
+      } catch {
+        toast.error("Error uploading image");
+      }
+      return;
+    }
+    if (qrInputType === "pdf") {
+      if (!pdfFile) {
+        setPdfError(lang.validationError.pdf.noFileSelected);
+        return;
+      }
+      if (pdfFile.size > 10 * 1024 * 1024) {
+        setPdfError(lang.validationError.pdf.tooLarge);
+        return;
+      }
+      if (pdfFile.type !== "application/pdf") {
+        setPdfError(lang.validationError.pdf.invalidFileType);
+        return;
+      }
+      try {
+        const publicUrl = await uploadFileToSupabase(pdfFile, session);
+        if (publicUrl) {
+          setQRCode(publicUrl);
+          setPdfError(null);
+        }
+      } catch {
+        toast.error("Error uploading PDF");
+      }
       return;
     }
   };
