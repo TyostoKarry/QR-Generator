@@ -11,9 +11,12 @@ export const Topbar: FC = () => {
 
   return (
     <div className="flex items-center justify-between h-16 px-4 bg-gradient-to-tl from-primary-1 to-primary-2 text-text shadow-xl">
-      <h1 className="text-3xl font-bold text-shadow-sm">
-        {lang.general.appName}
-      </h1>
+      <div className="flex flex-row justify-center items-center gap-2">
+        <img src="images/logo.png" alt="Logo" className="w-10 h-10" />
+        <h1 className="text-3xl font-bold text-shadow-sm">
+          {lang.general.appName}
+        </h1>
+      </div>
       <div className="flex flex-row justify-center items-center gap-4">
         <GithubButton />
         {!session ? (
