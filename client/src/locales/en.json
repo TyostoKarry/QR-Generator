@@ -21,6 +21,9 @@
     "backgroundColor": "Background Color",
     "title": "QR Code Colors"
   },
+  "error": {
+    "fileUploadError": "Unexpected error during file upload: "
+  },
   "general": {
     "appName": "QR Generator",
     "github": "GitHub",
@@ -53,16 +56,31 @@
     }
   },
   "toast": {
-    "error": {
-      "copyError": "Failed to copy to clipboard",
-      "downloadError": "Failed to download QR code",
-      "logoFileTooLarge": "Logo image is too large. Maximum size is 10 MB",
-      "logoInvalidFileType": "Invalid logo image type. Supported formats: png, jpg, jpeg",
-      "logoNoFileSelected": "No logo image selected"
+    "authentication": {
+      "signOutError": "Error occurred while signing out, please try again",
+      "signOutSuccess": "Signed out successfully",
+      "signUpError": "Error occurred while signing up, please try again"
     },
-    "success": {
-      "copySuccess": "Copied to clipboard",
-      "downloadSuccess": "QR code downloaded successfully"
+    "generic": {
+      "error": {
+        "copyError": "Failed to copy to clipboard",
+        "downloadError": "Failed to download QR code",
+        "fileUploadErrorImage": "Image upload failed. Please try again",
+        "fileUploadErrorPdf": "PDF upload failed. Please try again",
+        "logoFileTooLarge": "Logo image is too large. Maximum size is 10 MB",
+        "logoInvalidFileType": "Invalid logo image type. Supported formats: png, jpg, jpeg",
+        "logoNoFileSelected": "No logo image selected"
+      },
+      "success": {
+        "copySuccess": "Copied to clipboard",
+        "downloadSuccess": "QR code downloaded successfully"
+      }
+    },
+    "supabaseUpload": {
+      "publicUrlError": "Failed to get public URL for the uploaded file",
+      "sessionError": "Failed to validate session. Please sign in again",
+      "success": "File uploaded and QR code generated successfully",
+      "uploadFailed": "File upload failed. Please try again"
     }
   },
   "validationError": {

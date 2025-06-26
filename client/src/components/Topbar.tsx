@@ -1,4 +1,5 @@
 import { useContext, type FC } from "react";
+import { toast } from "sonner";
 import { Button } from "./Button";
 import { GithubButton } from "./GithubButton";
 import { useAuthContext } from "../contexts/AuthContext";
@@ -8,6 +9,24 @@ import { signUp, signOut } from "../services/authenticationService";
 export const Topbar: FC = () => {
   const lang = useContext(LanguageContext);
   const { session } = useAuthContext();
+
+  const handleSignOut = async () => {
+    const result = await signOut();
+    if (result.status === "error") {
+      console.error("Sign-out error:", result.message);
+      toast.error(lang.toast.authentication.signOutError);
+    } else {
+      toast.success(lang.toast.authentication.signOutSuccess);
+    }
+  };
+
+  const handleSignUp = async () => {
+    const result = await signUp();
+    if (result.status === "error") {
+      console.error("Sign-up error:", result.message);
+      toast.error(lang.toast.authentication.signUpError);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between h-16 px-4 bg-gradient-to-tl from-primary-1 to-primary-2 text-text shadow-xl">
@@ -20,9 +39,9 @@ export const Topbar: FC = () => {
       <div className="flex flex-row justify-center items-center gap-4">
         <GithubButton />
         {!session ? (
-          <Button label={lang.authentication.signUp} onClick={signUp} />
+          <Button label={lang.authentication.signUp} onClick={handleSignUp} />
         ) : (
-          <Button label={lang.authentication.signOut} onClick={signOut} />
+          <Button label={lang.authentication.signOut} onClick={handleSignOut} />
         )}
       </div>
     </div>

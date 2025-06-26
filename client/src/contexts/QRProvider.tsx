@@ -132,13 +132,20 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
         return;
       }
       try {
-        const publicUrl = await uploadFileToSupabase(imageFile, session);
-        if (publicUrl) {
-          setQRCode(publicUrl);
+        const fileUploadResult = await uploadFileToSupabase(imageFile, session);
+        if (
+          fileUploadResult.status === "success" &&
+          fileUploadResult.publicUrl
+        ) {
+          setQRCode(fileUploadResult.publicUrl);
           setImageError(null);
+          toast.success(lang.toast.supabaseUpload.success);
+        } else if (fileUploadResult.status === "error") {
+          toast.error(lang.toast.supabaseUpload[fileUploadResult.errorType]);
         }
-      } catch {
-        toast.error("Error uploading image");
+      } catch (error) {
+        console.error(lang.error.fileUploadError, error);
+        toast.error(lang.toast.generic.error.fileUploadErrorImage);
       }
       return;
     }
@@ -156,13 +163,20 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
         return;
       }
       try {
-        const publicUrl = await uploadFileToSupabase(pdfFile, session);
-        if (publicUrl) {
-          setQRCode(publicUrl);
+        const fileUploadResult = await uploadFileToSupabase(pdfFile, session);
+        if (
+          fileUploadResult.status === "success" &&
+          fileUploadResult.publicUrl
+        ) {
+          setQRCode(fileUploadResult.publicUrl);
           setPdfError(null);
+          toast.success(lang.toast.supabaseUpload.success);
+        } else if (fileUploadResult.status === "error") {
+          toast.error(lang.toast.supabaseUpload[fileUploadResult.errorType]);
         }
-      } catch {
-        toast.error("Error uploading PDF");
+      } catch (error) {
+        console.error(lang.error.fileUploadError, error);
+        toast.error(lang.toast.generic.error.fileUploadErrorPdf);
       }
       return;
     }
@@ -172,19 +186,19 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   const copyQrCodeToClipboard = () => {
     const canvas = document.getElementById("qrcode-canvas");
     if (!(canvas instanceof HTMLCanvasElement))
-      return toast.error(lang.toast.error.copyError);
+      return toast.error(lang.toast.generic.error.copyError);
 
     canvas.toBlob((blob) => {
-      if (!blob) return toast.error(lang.toast.error.copyError);
+      if (!blob) return toast.error(lang.toast.generic.error.copyError);
 
       const clipboardItem = new ClipboardItem({ "image/png": blob });
       navigator.clipboard
         .write([clipboardItem])
         .then(() => {
-          toast.success(lang.toast.success.copySuccess);
+          toast.success(lang.toast.generic.success.copySuccess);
         })
         .catch(() => {
-          toast.error(lang.toast.error.copyError);
+          toast.error(lang.toast.generic.error.copyError);
         });
     });
   };
@@ -192,7 +206,7 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   const downloadQrCode = () => {
     const canvas = document.getElementById("qrcode-canvas");
     if (!(canvas instanceof HTMLCanvasElement))
-      return toast.error(lang.toast.error.downloadError);
+      return toast.error(lang.toast.generic.error.downloadError);
 
     try {
       const image = canvas.toDataURL("image/png");
@@ -203,9 +217,9 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      toast.success(lang.toast.success.downloadSuccess);
+      toast.success(lang.toast.generic.success.downloadSuccess);
     } catch {
-      return toast.error(lang.toast.error.downloadError);
+      return toast.error(lang.toast.generic.error.downloadError);
     }
   };
 
