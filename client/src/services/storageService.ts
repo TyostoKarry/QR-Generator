@@ -10,22 +10,28 @@ export const uploadFileToSupabase = async (
     toast.error("User session is not available. Please log in.");
     return null;
   }
-  const filePath = `${file.name}@${Date.now()}`;
 
-  const { error: storageError } = await supabase.storage
+  const filePath = `${Date.now()}@${file.name}`;
+
+  const { error: uploadError } = await supabase.storage
     .from("qr-files")
     .upload(filePath, file);
 
-  if (storageError) {
-    toast.error(`Error uploading file: ${storageError.message}`);
+  if (uploadError) {
+    toast.error(`Error uploading file: ${uploadError.message}`);
     return null;
   }
 
-  const { data } = await supabase.storage
+  const { data: publicUrlData } = await supabase.storage
     .from("qr-files")
     .getPublicUrl(filePath);
 
+  if (!publicUrlData || !publicUrlData.publicUrl) {
+    toast.error("Error retrieving public URL for the uploaded file.");
+    return null;
+  }
+
   toast.success("File uploaded successfully!");
 
-  return data.publicUrl;
+  return publicUrlData.publicUrl;
 };
