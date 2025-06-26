@@ -20,19 +20,22 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
+        working-directory: client
         run: npm ci
 
       - name: Check licenses
+        working-directory: client
         run: npm run license-check
 
       - name: Generate license report
+        working-directory: client
         run: npm run generate-license-report
 
       - name: Upload license report
         uses: actions/upload-artifact@v4
         with:
           name: license-report
-          path: license-report.json
+          path: client/license-report.json
 
   verification:
     name: Run ESLint
@@ -50,9 +53,11 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
+        working-directory: client
         run: npm ci
 
       - name: Run ESLint
+        working-directory: client
         run: npm run lint
 
   build:
@@ -71,7 +76,9 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
+        working-directory: client
         run: npm ci
 
       - name: Build project
+        working-directory: client
         run: npm run build
