@@ -13,7 +13,7 @@ export const Topbar: FC = () => {
   const handleSignOut = async () => {
     const result = await signOut();
     if (result.status === "error") {
-      console.error("Sign-out error:", result.message);
+      console.error("Sign-out error:", result.error);
       toast.error(lang.toast.authentication.signOutError);
     } else {
       toast.success(lang.toast.authentication.signOutSuccess);
@@ -23,7 +23,7 @@ export const Topbar: FC = () => {
   const handleSignUp = async () => {
     const result = await signUp();
     if (result.status === "error") {
-      console.error("Sign-up error:", result.message);
+      console.error("Sign-up error:", result.error);
       toast.error(lang.toast.authentication.signUpError);
     }
   };

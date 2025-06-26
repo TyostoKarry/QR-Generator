@@ -8,14 +8,14 @@ export const signUp = async (): Promise<SupabaseSignUpResult> => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
   });
-  if (error) return { status: "error", message: error.message };
+  if (error) return { status: "error", error: error };
 
   return { status: "success" };
 };
 
 export const signOut = async (): Promise<SupabaseSignOutResult> => {
   const { error } = await supabase.auth.signOut();
-  if (error) return { status: "error", message: error.message };
+  if (error) return { status: "error", error: error };
 
   return { status: "success" };
 };

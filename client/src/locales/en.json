@@ -77,6 +77,8 @@
       }
     },
     "supabaseUpload": {
+      "fileCountExceeded": "You have reached the maximum file limit of 3. Please delete unused files and try again",
+      "fileCountFetchError": "Failed to fetch total uploaded file count",
       "publicUrlError": "Failed to get public URL for the uploaded file",
       "sessionError": "Failed to validate session. Please sign in again",
       "success": "File uploaded and QR code generated successfully",

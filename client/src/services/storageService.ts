@@ -9,6 +9,10 @@ export const uploadFileToSupabase = async (
   if (!session || !session.user)
     return { status: "error", errorType: "sessionError" };
 
+  // Check if the user has reached the file upload limit
+  const fileCount = await checkUserFileCount(session.user.id);
+  if (typeof fileCount !== "number") return fileCount;
+
   const filePath = `${Date.now()}@${file.name}`;
 
   const { error: uploadError } = await supabase.storage
@@ -16,7 +20,7 @@ export const uploadFileToSupabase = async (
     .upload(filePath, file);
 
   if (uploadError) {
-    console.error("File upload error:", uploadError.message);
+    console.error("File upload error:", uploadError);
     return { status: "error", errorType: "uploadFailed" };
   }
 
@@ -31,4 +35,26 @@ export const uploadFileToSupabase = async (
     status: "success",
     publicUrl: publicUrlData.publicUrl,
   };
+};
+
+const checkUserFileCount = async (
+  userId: string,
+): Promise<number | SupabaseStorageUploadResult> => {
+  const { data: tableData, error: tableError } = await supabase
+    .from("user_file_counts")
+    .select("file_count")
+    .eq("user_id", userId)
+    .single();
+
+  if (tableError && tableError.code === "PGRST116") return 0; // No record found, user has no files
+
+  if (tableData && tableData.file_count >= 3)
+    return { status: "error", errorType: "fileCountExceeded" };
+
+  if (tableError) {
+    console.error("Error fetching file count:", tableError);
+    return { status: "error", errorType: "fileCountFetchError" };
+  }
+
+  return tableData.file_count;
 };
