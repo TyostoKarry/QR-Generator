@@ -20,11 +20,11 @@ export const AddLogo: FC<AddLogoProps> = ({
     const file = e.target.files?.[0];
     e.target.value = "";
 
-    if (!file) return toast.error(lang.toast.error.logoNoFileSelected);
+    if (!file) return toast.error(lang.toast.generic.error.logoNoFileSelected);
     if (file.size > 100 * 1024 * 1024)
-      return toast.error(lang.toast.error.logoFileTooLarge);
+      return toast.error(lang.toast.generic.error.logoFileTooLarge);
     if (!["image/png", "image/jpeg", "image/jpg"].includes(file.type))
-      return toast.error(lang.toast.error.logoInvalidFileType);
+      return toast.error(lang.toast.generic.error.logoInvalidFileType);
 
     const previewUrl = URL.createObjectURL(file);
     setQrCodeLogoSrc(previewUrl);

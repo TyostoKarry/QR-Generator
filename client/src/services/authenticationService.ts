@@ -1,20 +1,21 @@
-import { toast } from "sonner";
 import { supabase } from "./supabase";
+import type {
+  SupabaseSignOutResult,
+  SupabaseSignUpResult,
+} from "../types/Supabase";
 
-export const signUp = async () => {
+export const signUp = async (): Promise<SupabaseSignUpResult> => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
   });
-  if (error) {
-    toast.error(`Error signing up: ${error.message}`);
-  }
+  if (error) return { status: "error", error: error };
+
+  return { status: "success" };
 };
 
-export const signOut = async () => {
+export const signOut = async (): Promise<SupabaseSignOutResult> => {
   const { error } = await supabase.auth.signOut();
-  if (error) {
-    toast.error(`Error signing out: ${error.message}`);
-  } else {
-    toast.success("Signed out successfully");
-  }
+  if (error) return { status: "error", error: error };
+
+  return { status: "success" };
 };

@@ -1,15 +1,17 @@
 import type { Session } from "@supabase/supabase-js";
-import { toast } from "sonner";
 import { supabase } from "./supabase";
+import type { SupabaseStorageUploadResult } from "../types/Supabase";
 
 export const uploadFileToSupabase = async (
   file: File,
   session: Session | null,
-): Promise<string | null> => {
-  if (!session || !session.user) {
-    toast.error("User session is not available. Please log in.");
-    return null;
-  }
+): Promise<SupabaseStorageUploadResult> => {
+  if (!session || !session.user)
+    return { status: "error", errorType: "sessionError" };
+
+  // Check if the user has reached the file upload limit
+  const fileCount = await checkUserFileCount(session.user.id);
+  if (typeof fileCount !== "number") return fileCount;
 
   const filePath = `${Date.now()}@${file.name}`;
 
@@ -18,20 +20,41 @@ export const uploadFileToSupabase = async (
     .upload(filePath, file);
 
   if (uploadError) {
-    toast.error(`Error uploading file: ${uploadError.message}`);
-    return null;
+    console.error("File upload error:", uploadError);
+    return { status: "error", errorType: "uploadFailed" };
   }
 
   const { data: publicUrlData } = await supabase.storage
     .from("qr-files")
     .getPublicUrl(filePath);
 
-  if (!publicUrlData || !publicUrlData.publicUrl) {
-    toast.error("Error retrieving public URL for the uploaded file.");
-    return null;
+  if (!publicUrlData || !publicUrlData.publicUrl)
+    return { status: "error", errorType: "publicUrlError" };
+
+  return {
+    status: "success",
+    publicUrl: publicUrlData.publicUrl,
+  };
+};
+
+const checkUserFileCount = async (
+  userId: string,
+): Promise<number | SupabaseStorageUploadResult> => {
+  const { data: tableData, error: tableError } = await supabase
+    .from("user_file_counts")
+    .select("file_count")
+    .eq("user_id", userId)
+    .single();
+
+  if (tableError && tableError.code === "PGRST116") return 0; // No record found, user has no files
+
+  if (tableData && tableData.file_count >= 3)
+    return { status: "error", errorType: "fileCountExceeded" };
+
+  if (tableError) {
+    console.error("Error fetching file count:", tableError);
+    return { status: "error", errorType: "fileCountFetchError" };
   }
 
-  toast.success("File uploaded successfully!");
-
-  return publicUrlData.publicUrl;
+  return tableData.file_count;
 };
