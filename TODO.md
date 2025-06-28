@@ -15,5 +15,6 @@
 - [x] **Supabase Storage**: Configure Supabase Storage to securely store uploaded files (images and PDFs). Generate public URLs for these files to embed in QR codes. Set up storage rules to enforce file size limits (max 10MB) and restrict uploads to authenticated users.
 - [x] **Rate Limit**: Track and enforce rate limiting (max 3 file-related QR codes per user) using Supabase's database and row-level security (RLS) policies.
 - [ ] **User Storage Management**: Allow users to view, manage, and delete their uploaded files directly from the app.
+- [ ] **Delete Old Files**: Use a cron job to automatically delete files that are over a week old to free up Supabase storage space and maintain system efficiency.
 - [ ] **Deploy Demo**: Publish demo version of the end product via GitHub pages (Only frontend).
 - [ ] **Documentation**: Write a README.md file to explain the app's features, setup instructions, and usage guidelines.
