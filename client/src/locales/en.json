@@ -7,12 +7,15 @@
     "addLogo": "Add Logo",
     "cancel": "Cancel",
     "copy": "Copy",
+    "deleteFile": "Delete File",
     "download": "Download",
     "generate": "Generate QR Code",
     "image": "Image",
     "pdf": "PDF",
     "removeLogo": "Remove Logo",
+    "reset": "Reset",
     "save": "Save",
+    "storage": "Storage",
     "text": "Text",
     "url": "URL"
   },
@@ -55,6 +58,12 @@
       "inputPlaceholder": "Enter URL here"
     }
   },
+  "storage": {
+    "automaticDeleteDate": "Automatic Delete Date",
+    "detailsTitle": "QR Code Details",
+    "fileName": "File Name",
+    "previewNotAvailable": "Preview not available"
+  },
   "toast": {
     "authentication": {
       "signOutError": "Error occurred while signing out, please try again",
@@ -69,12 +78,22 @@
         "fileUploadErrorPdf": "PDF upload failed. Please try again",
         "logoFileTooLarge": "Logo image is too large. Maximum size is 10 MB",
         "logoInvalidFileType": "Invalid logo image type. Supported formats: png, jpg, jpeg",
-        "logoNoFileSelected": "No logo image selected"
+        "logoNoFileSelected": "No logo image selected",
+        "signInToAccessStorage": "Sign in to access storage"
       },
       "success": {
         "copySuccess": "Copied to clipboard",
         "downloadSuccess": "QR code downloaded successfully"
       }
+    },
+    "supabaseDeleteFile": {
+      "deleteFailed": "Failed to delete file",
+      "sessionError": "Failed to validate session. Please sign in again",
+      "success": "File deleted successfully"
+    },
+    "supabaseGetUserFile": {
+      "filesError": "Failed to fetch user files",
+      "sessionError": "Failed to validate session. Please sign in again"
     },
     "supabaseUpload": {
       "fileCountExceeded": "You have reached the maximum file limit of 3. Please delete unused files and try again",

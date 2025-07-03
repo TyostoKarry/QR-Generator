@@ -183,8 +183,9 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
   };
 
   // QR code operations
-  const copyQrCodeToClipboard = () => {
-    const canvas = document.getElementById("qrcode-canvas");
+  const copyQrCodeToClipboard = (qrCodeId?: string) => {
+    const id = qrCodeId ? `qrcode-canvas-${qrCodeId}` : "qrcode-canvas";
+    const canvas = document.getElementById(id);
     if (!(canvas instanceof HTMLCanvasElement))
       return toast.error(lang.toast.generic.error.copyError);
 
@@ -203,8 +204,9 @@ export const QRProvider: FC<QRProviderProps> = ({ children }) => {
     });
   };
 
-  const downloadQrCode = () => {
-    const canvas = document.getElementById("qrcode-canvas");
+  const downloadQrCode = (qrCodeId?: string) => {
+    const id = qrCodeId ? `qrcode-canvas-${qrCodeId}` : "qrcode-canvas";
+    const canvas = document.getElementById(id);
     if (!(canvas instanceof HTMLCanvasElement))
       return toast.error(lang.toast.generic.error.downloadError);
 

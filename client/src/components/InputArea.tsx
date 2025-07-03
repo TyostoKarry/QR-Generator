@@ -1,7 +1,6 @@
 import { useContext, type FC } from "react";
 import { Dropzone } from "./Dropzone";
-import { ImagePreview } from "./ImagePreview";
-import { PdfPreview } from "./PdfPreview";
+import { FilePreview } from "./FilePreview";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
 import { validateFileName } from "../utils/validateFileName";
@@ -49,7 +48,7 @@ export const InputArea: FC = () => {
               : lang.inputArea[qrInputType].inputDescription}
           </p>
           {imageFile ? (
-            <ImagePreview />
+            <FilePreview file={imageFile} setFile={setImageFile} />
           ) : (
             <Dropzone
               key={qrInputType}
@@ -97,7 +96,7 @@ export const InputArea: FC = () => {
               : lang.inputArea[qrInputType].inputDescription}
           </p>
           {pdfFile ? (
-            <PdfPreview />
+            <FilePreview file={pdfFile} setFile={setPdfFile} />
           ) : (
             <Dropzone
               key={qrInputType}

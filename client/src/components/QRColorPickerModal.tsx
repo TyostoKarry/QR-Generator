@@ -8,6 +8,7 @@ import { useQRContext } from "../contexts/QRContext";
 interface QRColorPickerModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
+  qrCodePublicUrl?: string;
   qrCodeLogoSrc: string | null;
   qrForegroundColor: string;
   setQrForegroundColor: (color: string) => void;
@@ -18,6 +19,7 @@ interface QRColorPickerModalProps {
 export const QRColorPickerModal: FC<QRColorPickerModalProps> = ({
   isModalOpen,
   setIsModalOpen,
+  qrCodePublicUrl,
   qrCodeLogoSrc,
   qrForegroundColor,
   setQrForegroundColor,
@@ -34,8 +36,8 @@ export const QRColorPickerModal: FC<QRColorPickerModalProps> = ({
 
   const validateHex = (hex: string) => /^#([0-9A-Fa-f]{3}){1,2}$/.test(hex);
 
-  let debounceTimeoutForeground: number;
-  let debounceTimeoutBackground: number;
+  let debounceTimeoutForeground: ReturnType<typeof setTimeout>;
+  let debounceTimeoutBackground: ReturnType<typeof setTimeout>;
 
   const handleSaveColors = useCallback(() => {
     if (!validateHex(modalQrForegroundColor)) {
@@ -93,8 +95,14 @@ export const QRColorPickerModal: FC<QRColorPickerModalProps> = ({
           {lang.colorPickerModal.title}
         </h2>
         <QRCodeCanvas
-          id="qrcode-canvas"
-          value={qrCode ? qrCode : lang.general.helloWorld}
+          id="qrcode-color-picker-canvas"
+          value={
+            qrCodePublicUrl
+              ? qrCodePublicUrl
+              : qrCode
+                ? qrCode
+                : lang.general.helloWorld
+          }
           size={256}
           level={qrCodeLogoSrc ? "H" : "M"}
           fgColor={modalQrForegroundColor}
@@ -171,15 +179,30 @@ export const QRColorPickerModal: FC<QRColorPickerModalProps> = ({
             variant="secondary"
             className="w-24"
           />
-          <Button
-            label={lang.buttons.save}
-            onClick={() => handleSaveColors()}
-            disabled={
-              !validateHex(modalQrForegroundColor) ||
-              !validateHex(modalQrBackgroundColor)
-            }
-            className="w-24"
-          />
+          <div className="flex flex-row gap-2">
+            <Button
+              label={lang.buttons.reset}
+              onClick={() => {
+                setModalQrForegroundColor("#000000");
+                setModalQrBackgroundColor("#ffffff");
+              }}
+              disabled={
+                modalQrForegroundColor === "#000000" &&
+                modalQrBackgroundColor === "#ffffff"
+              }
+              variant="secondary"
+              className="w-24"
+            />
+            <Button
+              label={lang.buttons.save}
+              onClick={() => handleSaveColors()}
+              disabled={
+                !validateHex(modalQrForegroundColor) ||
+                !validateHex(modalQrBackgroundColor)
+              }
+              className="w-24"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
 import { useContext, type FC } from "react";
-import { QRGeneratorArea } from "../components/QRGeneratorArea";
+import { QRContainer } from "../components/QRContainer";
+import { QRDisplay } from "../components/QRDisplay";
+import { QRInputPanel } from "../components/QRInputPanel";
 import { LanguageContext } from "../contexts/LanguageContext";
 
 export const QRGenerator: FC = () => {
@@ -11,7 +13,10 @@ export const QRGenerator: FC = () => {
           {lang.general.introText}
         </p>
       </section>
-      <QRGeneratorArea />
+      <QRContainer
+        leftElement={<QRInputPanel />}
+        rightElement={<QRDisplay />}
+      />
     </div>
   );
 };

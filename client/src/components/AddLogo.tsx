@@ -6,15 +6,18 @@ import UploadIcon from "../assets/icons/upload.svg?react";
 import { LanguageContext } from "../contexts/LanguageContext";
 
 interface AddLogoProps {
-  qrCodeLogoSrc: string | null;
-  setQrCodeLogoSrc: (src: string | null) => void;
+  qrCodeId?: string;
+  qrCodeLogoSrc: string;
+  setQrCodeLogoSrc: (src: string) => void;
 }
 
 export const AddLogo: FC<AddLogoProps> = ({
+  qrCodeId,
   qrCodeLogoSrc,
   setQrCodeLogoSrc,
 }) => {
   const lang = useContext(LanguageContext);
+  const id = qrCodeId ? `logo-upload-${qrCodeId}` : "logo-upload";
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -38,7 +41,7 @@ export const AddLogo: FC<AddLogoProps> = ({
           icon={<RemoveIcon />}
           onClick={() => {
             URL.revokeObjectURL(qrCodeLogoSrc);
-            setQrCodeLogoSrc(null);
+            setQrCodeLogoSrc("");
           }}
           variant="danger"
           className="w-full"
@@ -48,12 +51,12 @@ export const AddLogo: FC<AddLogoProps> = ({
         <Button
           label={lang.buttons.addLogo}
           icon={<UploadIcon />}
-          onClick={() => document.getElementById("logo-upload")?.click()}
+          onClick={() => document.getElementById(id)?.click()}
           className="w-full"
         />
       )}
       <input
-        id="logo-upload"
+        id={id}
         type="file"
         accept="image/png, image/jpeg, image/jpg"
         className="hidden"

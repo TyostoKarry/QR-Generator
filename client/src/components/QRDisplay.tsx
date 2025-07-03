@@ -9,11 +9,19 @@ import PaletteIcon from "../assets/icons/palette.svg?react";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { useQRContext } from "../contexts/QRContext";
 
-export const QRDisplay: FC = () => {
+interface QRDisplayProps {
+  qrCodeId?: string;
+  qrCodePublicUrl?: string;
+}
+
+export const QRDisplay: FC<QRDisplayProps> = ({
+  qrCodeId,
+  qrCodePublicUrl,
+}) => {
   const lang = useContext(LanguageContext);
   const { qrCode, copyQrCodeToClipboard, downloadQrCode } = useQRContext();
 
-  const [qrCodeLogoSrc, setQrCodeLogoSrc] = useState<string | null>("");
+  const [qrCodeLogoSrc, setQrCodeLogoSrc] = useState<string>("");
   const [qrForegroundColor, setQrForegroundColor] = useState<string>("#000000");
   const [qrBackgroundColor, setQrBackgroundColor] = useState<string>("#ffffff");
 
@@ -21,17 +29,23 @@ export const QRDisplay: FC = () => {
     useState<boolean>(false);
 
   return (
-    <div className="flex flex-col justify-between items-center px-2 gap-2">
+    <section className="flex flex-col justify-between items-center px-2 gap-2">
       <h3 className="text-text text-3xl text-shadow-lg">
         {lang.general.qrCode}
       </h3>
       <QRCodeCanvas
-        id="qrcode-canvas"
-        value={qrCode ? qrCode : lang.general.helloWorld}
+        id={qrCodeId ? `qrcode-canvas-${qrCodeId}` : "qrcode-canvas"}
+        value={
+          qrCodePublicUrl
+            ? qrCodePublicUrl
+            : qrCode
+              ? qrCode
+              : lang.general.helloWorld
+        }
         size={256}
         level={qrCodeLogoSrc ? "H" : "M"}
-        fgColor={qrCode ? qrForegroundColor : "#bbbbbb"}
-        bgColor={qrCode ? qrBackgroundColor : "#ffffff"}
+        fgColor={qrCode || qrCodePublicUrl ? qrForegroundColor : "#bbbbbb"}
+        bgColor={qrCode || qrCodePublicUrl ? qrBackgroundColor : "#ffffff"}
         imageSettings={
           qrCodeLogoSrc
             ? {
@@ -45,6 +59,7 @@ export const QRDisplay: FC = () => {
       />
       <div className="w-full flex flex-row gap-2">
         <AddLogo
+          qrCodeId={qrCodeId}
           qrCodeLogoSrc={qrCodeLogoSrc}
           setQrCodeLogoSrc={setQrCodeLogoSrc}
         />
@@ -52,33 +67,34 @@ export const QRDisplay: FC = () => {
           icon={<PaletteIcon />}
           onClick={() => setIsColorPickerModalOpen(true)}
           iconClassName="h-6 w-6"
-          disabled={!qrCode}
+          disabled={!qrCode && !qrCodePublicUrl}
         />
       </div>
       <Button
         label={lang.buttons.copy}
         icon={<CopyIcon />}
-        onClick={() => copyQrCodeToClipboard()}
-        disabled={!qrCode}
+        onClick={() => copyQrCodeToClipboard(qrCodeId)}
+        disabled={!qrCode && !qrCodePublicUrl}
         className="w-full"
       />
       <Button
         label={lang.buttons.download}
         icon={<DownloadIcon />}
-        onClick={() => downloadQrCode()}
-        disabled={!qrCode}
+        onClick={() => downloadQrCode(qrCodeId)}
+        disabled={!qrCode && !qrCodePublicUrl}
         className="w-full"
         iconClassName="h-5 w-5"
       />
       <QRColorPickerModal
         isModalOpen={isColorPickerModalOpen}
         setIsModalOpen={setIsColorPickerModalOpen}
+        qrCodePublicUrl={qrCodePublicUrl}
         qrCodeLogoSrc={qrCodeLogoSrc}
         qrForegroundColor={qrForegroundColor}
         setQrForegroundColor={setQrForegroundColor}
         qrBackgroundColor={qrBackgroundColor}
         setQrBackgroundColor={setQrBackgroundColor}
       />
-    </div>
+    </section>
   );
 };
