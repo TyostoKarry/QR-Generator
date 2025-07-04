@@ -10,14 +10,11 @@ const checkUserFileCount = async (
   userId: string,
 ): Promise<number | SupabaseStorageUploadResult> => {
   const { data: tableData, error: tableError } = await supabase
-    .from("user_file_counts")
-    .select("file_count")
-    .eq("user_id", userId)
-    .single();
+    .from("user_files")
+    .select("*")
+    .eq("user_id", userId);
 
-  if (tableError && tableError.code === "PGRST116") return 0; // No record found, user has no files
-
-  if (tableData && tableData.file_count >= 3)
+  if (tableData && tableData.length >= 3)
     return { status: "error", errorType: "fileCountExceeded" };
 
   if (tableError) {
@@ -25,7 +22,7 @@ const checkUserFileCount = async (
     return { status: "error", errorType: "fileCountFetchError" };
   }
 
-  return tableData.file_count;
+  return tableData.length;
 };
 
 export const deleteFileFromSupabase = async (
