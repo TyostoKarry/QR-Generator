@@ -6,6 +6,7 @@ import { GithubButton } from "./GithubButton";
 import { useAuthContext } from "../contexts/AuthContext";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { signUp, signOut } from "../services/authenticationService";
+import { DeleteUserAccountFromSupabase } from "../services/storageService";
 
 export const Topbar: FC = () => {
   const lang = useContext(LanguageContext);
@@ -38,8 +39,18 @@ export const Topbar: FC = () => {
     navigate("/storage");
   };
 
+  const handleDeleteUserAccountFromSupabase = async () => {
+    const result = await DeleteUserAccountFromSupabase(session);
+    if (result.status === "error") {
+      toast.error(lang.toast.supabaseDeleteUserAccount[result.errorType]);
+      return;
+    }
+    toast.success(lang.toast.supabaseDeleteUserAccount.success);
+    navigate("/");
+  };
+
   return (
-    <div className="flex items-center justify-between h-16 px-4 bg-gradient-to-tl from-primary-1 to-primary-2 text-text shadow-xl">
+    <nav className="flex items-center justify-between h-16 px-4 bg-gradient-to-tl from-primary-1 to-primary-2 text-text shadow-xl">
       <Link to="/" className="flex flex-row justify-center items-center gap-2">
         <img src="/images/logo.png" alt="Logo" className="w-10 h-10" />
         <h1 className="text-3xl font-bold text-shadow-sm">
@@ -54,12 +65,17 @@ export const Topbar: FC = () => {
           <>
             <Button label={lang.buttons.storage} onClick={navigateToStorage} />
             <Button
+              label="Delete Account"
+              onClick={handleDeleteUserAccountFromSupabase}
+              variant="danger"
+            />
+            <Button
               label={lang.authentication.signOut}
               onClick={handleSignOut}
             />
           </>
         )}
       </div>
-    </div>
+    </nav>
   );
 };

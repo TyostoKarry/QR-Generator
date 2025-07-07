@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Button } from "./Button";
 import { QRContainer } from "./QRContainer";
 import { QRDisplay } from "./QRDisplay";
 import { StorageQrCodeDetails } from "./StorageQrCodeDetails";
@@ -59,8 +60,24 @@ export const StorageQrCodeList: FC = () => {
     toast.success(lang.toast.supabaseDeleteFile.success);
   };
 
+  if (qrCodeFiles.length === 0)
+    return (
+      <div className="flex flex-col items-center justify-center pt-80 gap-4">
+        <h1 className="text-2xl font-medium text-text text-shadow-sm">
+          {lang.storage.noFilesTitle}
+        </h1>
+        <p className="text-text/90 text-sm">
+          {lang.storage.noFilesDescription}
+        </p>
+        <Button
+          label={lang.buttons.startGenerating}
+          onClick={() => navigate("/")}
+        />
+      </div>
+    );
+
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 gap-4 py-24">
       {qrCodeFiles.map((file) => (
         <QRContainer
           key={file.id}

@@ -1,6 +1,8 @@
 import type { Session } from "@supabase/supabase-js";
+import { signOut } from "./authenticationService";
 import { supabase } from "./supabase";
 import type {
+  SupabaseDeleteUserAccountResult,
   SupabaseStorageDeleteResult,
   SupabaseStorageGetUserFilesResult,
   SupabaseStorageUploadResult,
@@ -23,6 +25,44 @@ const checkUserFileCount = async (
   }
 
   return tableData.length;
+};
+
+export const DeleteUserAccountFromSupabase = async (
+  session: Session | null,
+): Promise<SupabaseDeleteUserAccountResult> => {
+  if (!session || !session.user)
+    return { status: "error", errorType: "sessionError" };
+
+  try {
+    const { data: deleteUserData, error: deleteUserError } =
+      await supabase.functions.invoke("delete-account", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+    if (deleteUserError) {
+      console.error("Error deleting user account:", deleteUserError);
+      return { status: "error", errorType: "accountDeleteError" };
+    }
+
+    if (!deleteUserData || !deleteUserData.success) {
+      console.error("Delete user function did not return success");
+      return { status: "error", errorType: "accountDeleteError" };
+    }
+  } catch (error) {
+    console.error("Error invoking delete user function:", error);
+    return { status: "error", errorType: "accountDeleteError" };
+  }
+
+  const logoutResult = await signOut();
+  if (logoutResult.status === "error") {
+    console.error("Error signing out:", logoutResult.error);
+    return { status: "error", errorType: "signOutError" };
+  }
+
+  return { status: "success" };
 };
 
 export const deleteFileFromSupabase = async (
