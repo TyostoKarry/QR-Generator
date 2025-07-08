@@ -1,18 +1,25 @@
 {
   "authentication": {
-    "signUp": "Google Sign Up",
+    "signUp": "Sign in with Google",
     "signOut": "Sign Out"
   },
   "buttons": {
+    "account": "Account",
     "addLogo": "Add Logo",
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "copy": "Copy",
+    "deleteAccount": "Delete Account",
+    "deleteFile": "Delete File",
     "download": "Download",
     "generate": "Generate QR Code",
     "image": "Image",
     "pdf": "PDF",
     "removeLogo": "Remove Logo",
+    "reset": "Reset",
     "save": "Save",
+    "startGenerating": "Start Generating",
+    "storage": "Storage",
     "text": "Text",
     "url": "URL"
   },
@@ -20,6 +27,9 @@
     "foregroundColor": "Foreground Color",
     "backgroundColor": "Background Color",
     "title": "QR Code Colors"
+  },
+  "confirmationModal": {
+    "message": "Are you sure you want to delete your account? This action cannot be undone!"
   },
   "error": {
     "fileUploadError": "Unexpected error during file upload: "
@@ -55,6 +65,14 @@
       "inputPlaceholder": "Enter URL here"
     }
   },
+  "storage": {
+    "automaticDeleteDate": "Automatic Delete Date",
+    "detailsTitle": "QR Code Details",
+    "fileName": "File Name",
+    "noFilesDescription": "You haven't uploaded any files yet. Upload a file to generate a QR code",
+    "noFilesTitle": "No Files Found",
+    "previewNotAvailable": "Preview not available"
+  },
   "toast": {
     "authentication": {
       "signOutError": "Error occurred while signing out, please try again",
@@ -69,12 +87,28 @@
         "fileUploadErrorPdf": "PDF upload failed. Please try again",
         "logoFileTooLarge": "Logo image is too large. Maximum size is 10 MB",
         "logoInvalidFileType": "Invalid logo image type. Supported formats: png, jpg, jpeg",
-        "logoNoFileSelected": "No logo image selected"
+        "logoNoFileSelected": "No logo image selected",
+        "signInToAccessStorage": "Sign in to access storage"
       },
       "success": {
         "copySuccess": "Copied to clipboard",
         "downloadSuccess": "QR code downloaded successfully"
       }
+    },
+    "supabaseDeleteFile": {
+      "deleteFailed": "Failed to delete file",
+      "sessionError": "Failed to validate session. Please sign in again",
+      "success": "File deleted successfully"
+    },
+    "supabaseDeleteUserAccount": {
+      "accountDeleteError": "Failed to delete user account. Please try again",
+      "sessionError": "Failed to validate session. Please sign in again",
+      "signOutError": "Error occurred while signing out, please try again",
+      "success": "User account deleted successfully"
+    },
+    "supabaseGetUserFile": {
+      "filesError": "Failed to fetch user files",
+      "sessionError": "Failed to validate session. Please sign in again"
     },
     "supabaseUpload": {
       "fileCountExceeded": "You have reached the maximum file limit of 3. Please delete unused files and try again",

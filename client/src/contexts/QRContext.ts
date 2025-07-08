@@ -37,8 +37,8 @@ interface QRContextType {
   generateQRCode: () => void;
 
   // Function to operate on the QR code, such as copying or downloading
-  copyQrCodeToClipboard: () => void;
-  downloadQrCode: () => void;
+  copyQrCodeToClipboard: (qrCodeId?: string) => void;
+  downloadQrCode: (qrCodeId?: string) => void;
 }
 
 export const QRContext = createContext<QRContextType | undefined>(undefined);

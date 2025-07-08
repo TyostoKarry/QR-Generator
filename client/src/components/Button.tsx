@@ -21,7 +21,7 @@ export const Button: FC<ButtonProps> = ({
 }) => {
   const variantStyles = {
     primary: "bg-gradient-to-br from-button-1 to to-button-2",
-    secondary: "bg-stone-400",
+    secondary: "bg-gradient-to-br from-gray-400 to-gray-500",
     danger: "bg-red-500 hover:bg-red-600 active:bg-red-500",
   };
 
