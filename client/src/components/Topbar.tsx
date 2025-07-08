@@ -1,8 +1,11 @@
-import { useContext, type FC } from "react";
+import { useContext, useState, type FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { AccountDropdownMenu } from "./AccountDropdownMenu";
 import { Button } from "./Button";
+import { ConfirmationModal } from "./ConfirmationModal";
 import { GithubButton } from "./GithubButton";
+import GoogleIcon from "../assets/icons/google.svg?react";
 import { useAuthContext } from "../contexts/AuthContext";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { signUp, signOut } from "../services/authenticationService";
@@ -12,6 +15,7 @@ export const Topbar: FC = () => {
   const lang = useContext(LanguageContext);
   const { session } = useAuthContext();
   const navigate = useNavigate();
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const handleSignOut = async () => {
     const result = await signOut();
@@ -45,6 +49,7 @@ export const Topbar: FC = () => {
       toast.error(lang.toast.supabaseDeleteUserAccount[result.errorType]);
       return;
     }
+    setIsConfirmationModalOpen(false);
     toast.success(lang.toast.supabaseDeleteUserAccount.success);
     navigate("/");
   };
@@ -60,20 +65,26 @@ export const Topbar: FC = () => {
       <div className="flex flex-row justify-center items-center gap-4">
         <GithubButton />
         {!session ? (
-          <Button label={lang.authentication.signUp} onClick={handleSignUp} />
+          <Button
+            label={lang.authentication.signUp}
+            icon={<GoogleIcon />}
+            onClick={handleSignUp}
+            variant="secondary"
+            className="text-text text-sm"
+          />
         ) : (
-          <>
-            <Button label={lang.buttons.storage} onClick={navigateToStorage} />
-            <Button
-              label="Delete Account"
-              onClick={handleDeleteUserAccountFromSupabase}
-              variant="danger"
-            />
-            <Button
-              label={lang.authentication.signOut}
-              onClick={handleSignOut}
-            />
-          </>
+          <AccountDropdownMenu
+            onNavigateToStorage={navigateToStorage}
+            onDeleteAccount={() => setIsConfirmationModalOpen(true)}
+            onSignOut={handleSignOut}
+          />
+        )}
+        {isConfirmationModalOpen && (
+          <ConfirmationModal
+            message={lang.confirmationModal.message}
+            onConfirm={handleDeleteUserAccountFromSupabase}
+            onCancel={() => setIsConfirmationModalOpen(false)}
+          />
         )}
       </div>
     </nav>

@@ -21,7 +21,7 @@ export const FilePreview: FC<FilePreviewProps> = ({ file, setFile }) => {
   return (
     <div className="flex flex-col justify-between h-40">
       <div className="flex flex-col items-center w-full">
-        <div className="flex justify-center relative h-32 w-37">
+        <div className="flex justify-center relative h-32">
           {fileType === "pdf" ? (
             <img
               src={PdfIcon}

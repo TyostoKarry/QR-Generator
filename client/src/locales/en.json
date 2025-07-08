@@ -1,12 +1,15 @@
 {
   "authentication": {
-    "signUp": "Google Sign Up",
+    "signUp": "Sign in with Google",
     "signOut": "Sign Out"
   },
   "buttons": {
+    "account": "Account",
     "addLogo": "Add Logo",
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "copy": "Copy",
+    "deleteAccount": "Delete Account",
     "deleteFile": "Delete File",
     "download": "Download",
     "generate": "Generate QR Code",
@@ -24,6 +27,9 @@
     "foregroundColor": "Foreground Color",
     "backgroundColor": "Background Color",
     "title": "QR Code Colors"
+  },
+  "confirmationModal": {
+    "message": "Are you sure you want to delete your account? This action cannot be undone!"
   },
   "error": {
     "fileUploadError": "Unexpected error during file upload: "
