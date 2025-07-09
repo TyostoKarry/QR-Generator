@@ -2,9 +2,9 @@
 -- This file contains the SQL setup for Supabase, including policies and triggers for file management.
 BEGIN;
 -- Create storage bucket for storing QR code files
-insert into storage.buckets
+INSERT INTO storage.buckets
   (id, name, public, file_size_limit, allowed_mime_types)
-values
+VALUES
   ('qr-files', 'qr-files', true, 10485760, '{"image/png", "image/jpeg", "image/gif", application/pdf}');
 
 -- Policy to allow authenticated users to insert files into the storage.objects table
@@ -136,4 +136,32 @@ WITH CHECK (
     bucket_id = 'qr-files' AND
     (SELECT COUNT(*) FROM user_files WHERE user_id = auth.uid()) < 3
 );
+
+-- Create extensions for cron jobs and network requests
+CREATE EXTENSION IF NOT EXISTS pg_cron SCHEMA pg_catalog;
+CREATE EXTENSION IF NOT EXISTS pg_net SCHEMA extensions;
+
+-- Add secrets to the vault for secure access, replace with your actual values
+SELECT vault.create_secret('https://<your-supabase-project>.supabase.co', 'project_url');
+SELECT vault.create_secret('YOUR_SUPABASE_ANON_KEY', 'anon_key');
+SELECT vault.create_secret('YOUR_CRON_SECRET_KEY', 'cron_secret_key'); -- Also set in same value in Edge Function Secrets for key CRON_SECRET_KEY
+
+-- Create a cron job to run function to delete week old files every twelve hours
+SELECT
+  cron.schedule(
+    'delete_old_files_cron',
+    '0 0,12 * * *',
+    $$
+      SELECT
+        net.http_post(
+          url := (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'project_url') || '/functions/v1/delete-old-files',
+          headers := jsonb_build_object(
+            'Content-type', 'application/json',
+            'Authorization', 'Bearer ' || (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'anon_key'),
+            'cron-secret-key', (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'cron_secret_key')
+          ),
+          body := '{}'::jsonb
+        ) AS request_id
+    $$
+  );
 COMMIT;

@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
         }
       );
     }
-    // Create a Supabase client with the service role key to bypass RLS
+    // Create a Supabase client with the service role key
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     }
     const userId = user.id;
     // Delete user data from any related tables and storages first
-    // Retrieve user files metadata
+    // Fetch files from the `user_files` table
     const { data: userFilesMetadata, error: userFilesMetadataFetchError } =
       await supabaseAdmin.from("user_files").select("*").eq("user_id", userId);
     if (userFilesMetadataFetchError) {
@@ -86,18 +86,18 @@ Deno.serve(async (req) => {
         }
       );
     }
-    // Delete user files from qr-files storage
+    // Delete files from the `qr-files` storage bucket
     if (userFilesMetadata && userFilesMetadata.length > 0) {
       // Extract file paths from the metadata
       const filePaths = userFilesMetadata.map((file) => file.file_name);
-      const { error: fileDeleteError } = await supabaseAdmin.storage
+      const { error: storageDeleteError } = await supabaseAdmin.storage
         .from("qr-files")
         .remove(filePaths);
-      if (fileDeleteError) {
+      if (storageDeleteError) {
         return new Response(
           JSON.stringify({
             success: false,
-            error: fileDeleteError.message,
+            error: storageDeleteError.message,
           }),
           {
             status: 400,
@@ -109,16 +109,16 @@ Deno.serve(async (req) => {
         );
       }
     }
-    // Delete user files metadata from user_files table
-    const { error: userFilesMetadataError } = await supabaseAdmin
+    // Delete file metadata from the `user_files` table (should be done via functions and triggers after deleting files from storage but doing it here to be sure)
+    const { error: metadataDeleteError } = await supabaseAdmin
       .from("user_files")
       .delete()
       .eq("user_id", userId);
-    if (userFilesMetadataError) {
+    if (metadataDeleteError) {
       return new Response(
         JSON.stringify({
           success: false,
-          error: userFilesMetadataError.message,
+          error: metadataDeleteError.message,
         }),
         {
           status: 400,
