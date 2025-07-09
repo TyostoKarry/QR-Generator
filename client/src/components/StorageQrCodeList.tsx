@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, type FC } from "react";
+import { useCallback, useContext, useEffect, useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "./Button";
@@ -26,7 +26,7 @@ export const StorageQrCodeList: FC = () => {
     setHasMounted(true);
   }, []);
 
-  const fetchUserFiles = async () => {
+  const fetchUserFiles = useCallback(async () => {
     const getUserFileResult = await getUserFilesFromSupabase(session);
     if (getUserFileResult.status === "error") {
       toast.error(lang.toast.supabaseGetUserFile[getUserFileResult.errorType]);
@@ -37,12 +37,12 @@ export const StorageQrCodeList: FC = () => {
       const files = getUserFileResult.files;
       setQrCodeFiles(files);
     }
-  };
+  }, [lang.toast.supabaseGetUserFile, navigate, session]);
 
   useEffect(() => {
     if (!hasMounted) return;
     fetchUserFiles();
-  }, [hasMounted, lang.toast.supabaseGetUserFile, navigate, session]);
+  }, [hasMounted, fetchUserFiles]);
 
   const deleteFile = async (fileName: string) => {
     const deleteResult = await deleteFileFromSupabase(fileName, session);
