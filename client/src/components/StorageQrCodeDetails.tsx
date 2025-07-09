@@ -1,6 +1,7 @@
 import { useContext, type FC } from "react";
 import { Button } from "./Button";
 import PdfIcon from "../assets/icons/pdf.svg";
+import RefreshIcon from "../assets/icons/refresh.svg?react";
 import { LanguageContext } from "../contexts/LanguageContext";
 import type { SupabaseUserFilesSchema } from "../types/Supabase";
 import { getFilePreviewType } from "../utils/getFilePreviewType";
@@ -8,12 +9,14 @@ import { truncateFileName } from "../utils/truncateFileName";
 
 interface StorageQrCodeDetailsProps {
   file: SupabaseUserFilesSchema;
-  deleteFile: (fileId: string) => void;
+  deleteFile: (fileName: string) => void;
+  refreshDeleteDate: (fileId: string) => void;
 }
 
 export const StorageQrCodeDetails: FC<StorageQrCodeDetailsProps> = ({
   file,
   deleteFile,
+  refreshDeleteDate,
 }) => {
   const lang = useContext(LanguageContext);
 
@@ -27,6 +30,15 @@ export const StorageQrCodeDetails: FC<StorageQrCodeDetailsProps> = ({
     month: "long",
     day: "numeric",
   });
+
+  const autoDeleteTime = autoDeleteDate.getHours() < 12 ? "12:00" : "00:00";
+
+  const fileUpdatedAt = new Date(file.updated_at);
+  const today = new Date();
+  const isCurrentDate =
+    fileUpdatedAt.getFullYear() === today.getFullYear() &&
+    fileUpdatedAt.getMonth() === today.getMonth() &&
+    fileUpdatedAt.getDate() === today.getDate();
 
   return (
     <section className="flex flex-col justify-between items-center text-center w-full">
@@ -52,10 +64,24 @@ export const StorageQrCodeDetails: FC<StorageQrCodeDetailsProps> = ({
         </p>
       </div>
       <div className="flex flex-col w-full">
-        <p className="text-text/80 text-sm">
-          {lang.storage.automaticDeleteDate}
-        </p>
-        <p className="text-text text-m">{formatAutoDeleteDate}</p>
+        <p className="text-text/80 text-sm">{lang.storage.automaticDeleteAt}</p>
+        <div className="flex flex-row items-center justify-between w-full">
+          <p className="text-text text-m">{`${formatAutoDeleteDate} ${lang.storage.at} ${autoDeleteTime}`}</p>
+          <div
+            className="h-6 w-6 flex items-center justify-center"
+            title={
+              isCurrentDate
+                ? lang.storage.automaticDeleteAtRefreshTooltipDisabled
+                : lang.storage.automaticDeleteAtRefreshTooltip
+            }
+          >
+            <RefreshIcon
+              className={`h-5 w-5 ${isCurrentDate ? "" : "hover:h-5.5 hover:w-5.5 active:h-5 active:w-5 cursor-pointer"}`}
+              onClick={() => (isCurrentDate ? {} : refreshDeleteDate(file.id))}
+              fill={isCurrentDate ? "#bbbbbb" : "#000000"}
+            />
+          </div>
+        </div>
       </div>
       <Button
         label={lang.buttons.deleteFile}
