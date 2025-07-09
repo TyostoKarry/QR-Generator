@@ -7,6 +7,13 @@ export type SupabaseDeleteUserAccountResult =
       errorType: "accountDeleteError" | "sessionError" | "signOutError";
     };
 
+export type SupabaseUpdateUserFileMetadataResult =
+  | { status: "success" }
+  | {
+      status: "error";
+      errorType: "updateFailed" | "sessionError";
+    };
+
 export type SupabaseSignOutResult =
   | { status: "success" }
   | { status: "error"; error: AuthError };

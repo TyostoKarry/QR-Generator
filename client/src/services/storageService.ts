@@ -6,6 +6,7 @@ import type {
   SupabaseStorageDeleteResult,
   SupabaseStorageGetUserFilesResult,
   SupabaseStorageUploadResult,
+  SupabaseUpdateUserFileMetadataResult,
 } from "../types/Supabase";
 
 const checkUserFileCount = async (
@@ -27,7 +28,7 @@ const checkUserFileCount = async (
   return tableData.length;
 };
 
-export const DeleteUserAccountFromSupabase = async (
+export const deleteUserAccountFromSupabase = async (
   session: Session | null,
 ): Promise<SupabaseDeleteUserAccountResult> => {
   if (!session || !session.user)
@@ -104,6 +105,27 @@ export const getUserFilesFromSupabase = async (
     status: "success",
     files: files,
   };
+};
+
+export const updateUserFileMetadataTimestamp = async (
+  fileId: string,
+  session: Session | null,
+): Promise<SupabaseUpdateUserFileMetadataResult> => {
+  if (!session || !session.user)
+    return { status: "error", errorType: "sessionError" };
+
+  const { error: updateError } = await supabase
+    .from("user_files")
+    .update({ updated_at: new Date().toISOString() })
+    .eq("id", fileId)
+    .eq("user_id", session.user.id);
+
+  if (updateError) {
+    console.error("Error updating file metadata timestamp:", updateError);
+    return { status: "error", errorType: "updateFailed" };
+  }
+
+  return { status: "success" };
 };
 
 export const uploadFileToSupabase = async (

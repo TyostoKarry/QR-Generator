@@ -10,6 +10,7 @@ import { LanguageContext } from "../contexts/LanguageContext";
 import {
   deleteFileFromSupabase,
   getUserFilesFromSupabase,
+  updateUserFileMetadataTimestamp,
 } from "../services/storageService";
 import type { SupabaseUserFilesSchema } from "../types/Supabase";
 
@@ -25,25 +26,21 @@ export const StorageQrCodeList: FC = () => {
     setHasMounted(true);
   }, []);
 
+  const fetchUserFiles = async () => {
+    const getUserFileResult = await getUserFilesFromSupabase(session);
+    if (getUserFileResult.status === "error") {
+      toast.error(lang.toast.supabaseGetUserFile[getUserFileResult.errorType]);
+      console.error("Error fetching user files:", getUserFileResult.errorType);
+      navigate("/");
+    }
+    if (getUserFileResult.status === "success") {
+      const files = getUserFileResult.files;
+      setQrCodeFiles(files);
+    }
+  };
+
   useEffect(() => {
     if (!hasMounted) return;
-    const fetchUserFiles = async () => {
-      const getUserFileResult = await getUserFilesFromSupabase(session);
-      if (getUserFileResult.status === "error") {
-        toast.error(
-          lang.toast.supabaseGetUserFile[getUserFileResult.errorType],
-        );
-        console.error(
-          "Error fetching user files:",
-          getUserFileResult.errorType,
-        );
-        navigate("/");
-      }
-      if (getUserFileResult.status === "success") {
-        const files = getUserFileResult.files;
-        setQrCodeFiles(files);
-      }
-    };
     fetchUserFiles();
   }, [hasMounted, lang.toast.supabaseGetUserFile, navigate, session]);
 
@@ -58,6 +55,22 @@ export const StorageQrCodeList: FC = () => {
       prevFiles.filter((file) => file.file_name !== fileName),
     );
     toast.success(lang.toast.supabaseDeleteFile.success);
+  };
+
+  const refreshDeleteDate = async (fileId: string) => {
+    const updateResult = await updateUserFileMetadataTimestamp(fileId, session);
+    if (updateResult.status === "error") {
+      toast.error(
+        lang.toast.supabaseUpdateFileMetadataTimestamp[updateResult.errorType],
+      );
+      console.error(
+        "Error updating file metadata timestamp:",
+        updateResult.errorType,
+      );
+      return;
+    }
+    toast.success(lang.toast.supabaseUpdateFileMetadataTimestamp.success);
+    fetchUserFiles();
   };
 
   if (qrCodeFiles.length === 0)
@@ -82,7 +95,11 @@ export const StorageQrCodeList: FC = () => {
         <QRContainer
           key={file.id}
           leftElement={
-            <StorageQrCodeDetails file={file} deleteFile={deleteFile} />
+            <StorageQrCodeDetails
+              file={file}
+              deleteFile={deleteFile}
+              refreshDeleteDate={refreshDeleteDate}
+            />
           }
           rightElement={
             <QRDisplay qrCodeId={file.id} qrCodePublicUrl={file.public_url} />

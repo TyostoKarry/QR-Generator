@@ -66,7 +66,10 @@
     }
   },
   "storage": {
-    "automaticDeleteDate": "Automatic Delete Date",
+    "automaticDeleteAt": "Automatic Delete At",
+    "automaticDeleteAtRefreshTooltip": "Refresh Delete Date to update the automatic delete time",
+    "automaticDeleteAtRefreshTooltipDisabled": "You can only refresh the delete date if the file was not created or updated today",
+    "at": "AT",
     "detailsTitle": "QR Code Details",
     "fileName": "File Name",
     "noFilesDescription": "You haven't uploaded any files yet. Upload a file to generate a QR code",
@@ -109,6 +112,11 @@
     "supabaseGetUserFile": {
       "filesError": "Failed to fetch user files",
       "sessionError": "Failed to validate session. Please sign in again"
+    },
+    "supabaseUpdateFileMetadataTimestamp": {
+      "updateFailed": "Failed to update file metadata timestamp",
+      "sessionError": "Failed to validate session. Please sign in again",
+      "success": "Automatic file delete time updated successfully"
     },
     "supabaseUpload": {
       "fileCountExceeded": "You have reached the maximum file limit of 3. Please delete unused files and try again",

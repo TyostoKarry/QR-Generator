@@ -9,7 +9,7 @@ import GoogleIcon from "../assets/icons/google.svg?react";
 import { useAuthContext } from "../contexts/AuthContext";
 import { LanguageContext } from "../contexts/LanguageContext";
 import { signUp, signOut } from "../services/authenticationService";
-import { DeleteUserAccountFromSupabase } from "../services/storageService";
+import { deleteUserAccountFromSupabase } from "../services/storageService";
 
 export const Topbar: FC = () => {
   const lang = useContext(LanguageContext);
@@ -44,7 +44,7 @@ export const Topbar: FC = () => {
   };
 
   const handleDeleteUserAccountFromSupabase = async () => {
-    const result = await DeleteUserAccountFromSupabase(session);
+    const result = await deleteUserAccountFromSupabase(session);
     if (result.status === "error") {
       toast.error(lang.toast.supabaseDeleteUserAccount[result.errorType]);
       return;
